@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 import "./login.css";
 import { connect } from "react-redux";
@@ -131,10 +133,10 @@ class SignUpBuyer extends Component {
                   </div>
 
                   <div class="card-body text-center">
-                    Have an account?{" "}
-                    <a href="" onClick={this.signIn}>
-                      Log In
-                    </a>
+                    Have an account?
+                    <Link value="login" to={{ pathname: "/login" }}>
+                      login
+                    </Link>
                   </div>
                   <div class="text-center">
                     <small class="text-muted">

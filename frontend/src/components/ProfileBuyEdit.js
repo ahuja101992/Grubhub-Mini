@@ -28,7 +28,11 @@ function mapDispatchToProps(dispatch) {
 class Profilebuyedit extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      file: null
+    };
     this.updateProfile = this.updateProfile.bind(this);
+    this.imageUpload = this.imageUpload.bind(this);
   }
   componentDidMount() {
     const email = localStorage.getItem("email_id");
@@ -44,11 +48,13 @@ class Profilebuyedit extends Component {
     //   });
     // });
   }
-
+  imageUpload = e => {
+    this.setState({ file: e.target.files[0] });
+  };
   updateProfile(e) {
     e.preventDefault();
     console.log("inside" + e.target.length);
-    const formdata = new FormData(e.target);
+    let formdata = new FormData(e.target);
     // if (formdata.getAll("confirmpassword") != formdata.getAll("password")) {
     //   console.log("raise error");
     // } else
@@ -62,6 +68,17 @@ class Profilebuyedit extends Component {
         password: formdata.getAll("newpassword")[0],
         confirmpassword: formdata.getAll("confirmpassword")[0]
       };
+      // let sendData = new FormData();
+      // // console.log(this.state.file);
+      // // console.log(data);
+      // sendData.append("picture", this.state.file);
+      // sendData.append("body", JSON.stringify(data));
+      // const config = {
+      //   headers: {
+      //     "content-type": "multipart/form-data"
+      //   }
+      // };
+      // console.log("test data " + sendData.getAll("pictures"));
       this.props.updateProf(data);
     }
   }
@@ -92,9 +109,14 @@ class Profilebuyedit extends Component {
                   class="rounded"
                   alt="avatar"
                 />
-                <h6>Upload a different photo...</h6>
 
-                <input type="file" class="form-control" />
+                <input
+                  className="btn btn-default"
+                  type="file"
+                  accept="image/*"
+                  onChange={this.imageUpload}
+                  class="form-control"
+                />
               </div>
             </div>
 

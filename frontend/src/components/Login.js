@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./login.css";
 import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import cookie from "react-cookies";
@@ -149,13 +150,12 @@ class Login extends Component {
                     </div>
 
                     <div class="text-center">
-                      <a
-                        class="create-account"
-                        href=""
-                        onClick={this.toSignUpBuy}
+                      <Link
+                        value="Create your account"
+                        to={{ pathname: "/SignUpBuyer" }}
                       >
-                        Create your account
-                      </a>
+                        Create Your Account
+                      </Link>
                     </div>
                   </form>
                 </div>
