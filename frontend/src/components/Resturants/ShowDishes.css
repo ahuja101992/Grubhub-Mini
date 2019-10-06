@@ -1,0 +1,44 @@
+.dish-container {
+  min-height: calc(100vh - 85px);
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+}
+
+.header-row > div,
+.dish-row > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-row {
+  font-weight: 600;
+}
+
+.header-row > div {
+  padding: 15px;
+}
+
+.dish-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  justify-content: space-evenly;
+  margin: 10px 0;
+}

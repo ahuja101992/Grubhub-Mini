@@ -1,0 +1,64 @@
+.label-new {
+  margin-bottom: 0rem;
+  /* margin-top: 0.5rem; */
+  font-size: 14px !important;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #6b6b83 !important;
+}
+.input-area {
+  margin-top: 0.5rem;
+}
+.create-account {
+  color: #0058b8;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px !important;
+}
+.create-account:hover {
+  color: #0058b8;
+  text-decoration: none;
+  font-size: 14px !important;
+}
+.center {
+  text-align: center;
+}
+
+.home-container > .row > .col-sm-6 {
+  width: 50vw;
+  height: calc(100vh - 70px);
+  padding: 64px 100px;
+}
+
+.home-container .background {
+  background-image: url("./home.png");
+}
+.titleImg {
+  background-image: url("./ResturantImg.svg");
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.flex.sign-in {
+  justify-content: flex-end;
+}
+
+.btn-signin {
+  text-decoration: none;
+  color: #0070eb !important;
+  font-size: 20.3px;
+  line-height: 1.44359;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.delivery-love {
+  margin-top: 40px;
+  font-size: 3rem;
+}
+
+.login-container {
+  height: calc(100vh - 60px);
+}

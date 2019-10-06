@@ -1,0 +1,26 @@
+.add-dish-wrapper {
+  min-height: calc(100vh - 90px);
+}
+
+.add-container {
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+}
+
+.image-container {
+  height: 200px;
+  border: solid 1px;
+}
+
+.dropdown-menu {
+  transform: translate3d(0px, 35px, 0px) !important;
+}
+
+.right-container h6 {
+  margin: 10px 0;
+}
+
+.update-btn {
+  margin-top: 20px;
+}
