@@ -83,10 +83,10 @@ class ShowRPastOrders extends Component {
                   <div class="details-container">
                     <div class="order-num">{ord.ORDER_NUM}</div>
                     <div class="buyer-name">
-                      {"Address : " + ord.first_name + " " + ord.last_name}
+                      {"Name : " + ord.first_name + " " + ord.last_name}
                     </div>
                     <div class="buyer-address">
-                      {"Name : " +
+                      {"Address : " +
                         ord.house_num +
                         " " +
                         ord.ADDR_1 +
