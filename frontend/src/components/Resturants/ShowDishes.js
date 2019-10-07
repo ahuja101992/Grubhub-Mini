@@ -73,7 +73,6 @@ class ShowDishes extends Component {
   };
 
   submitEdit = e => {
-    this.setState({ show: false });
     const data = {
       dish_id: this.state.currDish_id,
       dish_name: this.state.currDish_Name,
@@ -114,12 +113,17 @@ class ShowDishes extends Component {
     console.log("id obtained is " + id);
     let rec = this.props.dishes.filter(dish => dish.DISH_ID == id);
     console.log(JSON.stringify(rec));
-    this.setState({
-      currDish_Name: rec[0].DISH_NAME,
-      currDish_DESC: rec[0].DISH_DESC,
-      currDish_id: rec[0].DISH_ID,
-      CurrDish_price: rec[0].DISH_PRICE
-    });
+    this.setState(
+      {
+        currDish_Name: rec[0].DISH_NAME,
+        currDish_DESC: rec[0].DISH_DESC,
+        currDish_id: rec[0].DISH_ID,
+        CurrDish_price: rec[0].DISH_PRICE
+      },
+      () => {
+        this.setState({ show: false });
+      }
+    );
   };
   componentDidMount() {
     // console.log("cmponent mount");

@@ -54,15 +54,27 @@ class HomeR extends Component {
                     <p class="card-text">
                       Mix it up! Try a new restaurant today
                     </p>
-                    <Link value="Your Orders" to={{ pathname: "/showrorders" }}>
-                      Your Orders
-                    </Link>
-                    <Link value="Show Dishes" to={{ pathname: "/showdishes" }}>
-                      Show Dishes
-                    </Link>
-                    <Link value="Add Dish" to={{ pathname: "/adddish" }}>
-                      Add Dish
-                    </Link>
+                    <div class="link-container">
+                      <Link
+                        value="Your Orders"
+                        to={{ pathname: "/showrorders" }}
+                      >
+                        Your Orders
+                      </Link>
+                    </div>
+                    <div class="link-container">
+                      <Link
+                        value="Show Dishes"
+                        to={{ pathname: "/showdishes" }}
+                      >
+                        Show Dishes
+                      </Link>
+                    </div>
+                    <div class="link-container">
+                      <Link value="Add Dish" to={{ pathname: "/adddish" }}>
+                        Add Dish
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

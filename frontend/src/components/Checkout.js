@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import cookie from "react-cookies";
 import { placeOrder } from "../actions/orderAction";
 import { throwStatement } from "@babel/types";
+import "./Checkout.css";
 
 function mapStateToProps(store) {
   return {
@@ -78,13 +79,10 @@ class Checkout extends Component {
       console.log(cartItems.length);
       cartItemsDisplay = cartItems.map(item => {
         return (
-          <div>
-            <div className="row col-sm-12">{item.DISH_NAME}</div>
-            <div className="row col-sm-12">{item.DISH_PRICE}</div>
-            <div className="row col-sm-12">{item.count}</div>
-            <div>
-              <p> </p>
-            </div>
+          <div class="row">
+            <div className="col-sm-4 flex">{item.DISH_NAME}</div>
+            <div className="col-sm-4 flex">{item.DISH_PRICE}</div>
+            <div className="col-sm-4 flex">{item.count}</div>
           </div>
         );
       });
@@ -92,13 +90,25 @@ class Checkout extends Component {
       sTotal = cartItems.reduce((a, c) => a + c.DISH_PRICE * c.count, 0);
     }
     return (
-      <div>
+      <div class="col-sm-10 confirm-container">
         {redirectVar}
         {this.props.orderSuccess === "true" ? successMsg : ""}
+        <div class="row header-row">
+          <div className="col-sm-4 flex">Dish Name</div>
+          <div className="col-sm-4 flex">Price</div>
+          <div className="col-sm-4 flex">Quantity</div>
+        </div>
         {cartItemsDisplay}
-        {this.props.orderSuccess === "true" ? "" : <div>Total : {sTotal}</div>}
+        {this.props.orderSuccess === "true" ? (
+          ""
+        ) : (
+          <div class="total-row">Total : {sTotal}</div>
+        )}
 
-        <button className="btn btn-primary" onClick={this.submitOrder}>
+        <button
+          className="btn btn-primary col-sm-4 submit-btn"
+          onClick={this.submitOrder}
+        >
           Place Order
         </button>
       </div>

@@ -1,0 +1,27 @@
+.confirm-container {
+  min-height: calc(100vh - 60px);
+  padding: 25px 15px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-row {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.row .flex {
+  padding: 10px;
+}
+
+.total-row {
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.submit-btn {
+  margin: auto;
+}
