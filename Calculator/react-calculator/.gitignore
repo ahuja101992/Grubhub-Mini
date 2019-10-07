@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-Calculator/Backend/node_modules
+/node_modules
 /.pnp
 .pnp.js
 
@@ -21,10 +21,3 @@ Calculator/Backend/node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-backend/node_modules
-frontend/node_modules
-
-/AWS/loginActions.js
-/AWS/orderAction.js
-/backend/images/food.jpg

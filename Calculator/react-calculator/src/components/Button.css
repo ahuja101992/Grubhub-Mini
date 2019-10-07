@@ -1,0 +1,34 @@
+.Button {
+  display: flex;
+  height: 4em;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-weight: lighter;
+  font-size: 1.4em;
+  background-color: rgb(247, 255, 255);
+  color: #8888;
+  outline: 1px solid #8888;
+}
+.Operator {
+  background-color: rgb(94, 178, 211);
+  color: white;
+}
+.Reset {
+  background-color: rgb(92, 110, 133);
+  color: black;
+  font-weight: bold;
+}
+.input {
+  display: flex;
+  height: 4em;
+  flex: 1;
+  background-color: lightgrey;
+  outline: 1px solid #8888;
+  color: black;
+  justify-content: flex-end;
+  padding: 0.5em;
+  font-weight: bold;
+  font-size: 1.6em;
+  align-items: center;
+}
