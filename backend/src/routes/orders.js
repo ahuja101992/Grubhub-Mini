@@ -7,12 +7,35 @@ const bcrypt = require("bcrypt");
 const secret = "CMPE_273_grbhub";
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+var kafka = require("../kafka/client");
+var requireAuth = passport.authenticate("jwt", { session: false });
 
-router.post("/insertorder", (req, res) => {
+router.post("/insertorder", requireAuth, (req, res) => {
   const rest_email_id = req.body.rest_email_id;
   const buy_email_id = req.body.buy_email_id;
   console.log("insertorder req.body" + JSON.stringify(req.body));
-  const newOrder = new Order({
+  kafka.make_request(
+    "orders",
+    { path: "insertorder", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+  /*const newOrder = new Order({
     rest_email_id: req.body.rest_email_id,
     buy_email_id: req.body.buy_email_id,
     restuarant_name: req.body.restuarant_name,
@@ -32,12 +55,36 @@ router.post("/insertorder", (req, res) => {
   newOrder
     .save()
     .then(newOrder => res.json(response))
-    .catch(err => res.status(400).json(err));
+    .catch(err => res.status(400).json(err));*/
 });
 
-router.get("/getcurrorders/:buy_email_id", (req, res) => {
-  console.log("getcurrorders req.body" + JSON.stringify(req.params));
-  Order.find({ buy_email_id: req.params.buy_email_id, status: "New" }, {}).then(
+router.get("/getcurrorders/:buy_email_id", requireAuth, (req, res) => {
+  console.log("getcurrorders req.params" + JSON.stringify(req.params));
+
+  kafka.make_request(
+    "orders",
+    { path: "getcurrorders", params: req.params },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+
+        res.end();
+      }
+    }
+  );
+
+  /*Order.find({ buy_email_id: req.params.buy_email_id, status: "New" }, {}).then(
     order => {
       if (!order) {
         let errors = "No orders Found";
@@ -60,12 +107,35 @@ router.get("/getcurrorders/:buy_email_id", (req, res) => {
         res.end(JSON.stringify(response));
       }
     }
-  );
+  );*/
 });
 
-router.get("/getpastorders/:buy_email_id", (req, res) => {
+router.get("/getpastorders/:buy_email_id", requireAuth, (req, res) => {
   console.log("getpastorders req.body" + JSON.stringify(req.params));
-  Order.find(
+  kafka.make_request(
+    "orders",
+    { path: "getpastorders", params: req.params },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+
+        res.end();
+      }
+    }
+  );
+
+  /*Order.find(
     { buy_email_id: req.params.buy_email_id, status: { $ne: "New" } },
     {}
   ).then(order => {
@@ -89,12 +159,34 @@ router.get("/getpastorders/:buy_email_id", (req, res) => {
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
 
-router.get("/getrescurrorders/:rest_email_id", (req, res) => {
+router.get("/getrescurrorders/:rest_email_id", requireAuth, (req, res) => {
   console.log("getrescurrorders req.body" + JSON.stringify(req.params));
-  Order.find({
+  kafka.make_request(
+    "orders",
+    { path: "getrescurrorders", params: req.params },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+
+        res.end();
+      }
+    }
+  );
+  /*Order.find({
     rest_email_id: req.params.rest_email_id,
     status: { $ne: "Delivered" }
   }).then(order => {
@@ -118,12 +210,34 @@ router.get("/getrescurrorders/:rest_email_id", (req, res) => {
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
 
-router.get("/getrespastorders/:rest_email_id", (req, res) => {
+router.get("/getrespastorders/:rest_email_id", requireAuth, (req, res) => {
   console.log("getrespastorders req.body" + JSON.stringify(req.params));
-  Order.find(
+  kafka.make_request(
+    "orders",
+    { path: "getrespastorders", params: req.params },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+
+        res.end();
+      }
+    }
+  );
+  /*Order.find(
     { rest_email_id: req.params.rest_email_id, status: "Delivered" },
     {}
   ).then(order => {
@@ -147,12 +261,34 @@ router.get("/getrespastorders/:rest_email_id", (req, res) => {
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
 
-router.get("/getorditems/:order_id", (req, res) => {
+router.get("/getorditems/:order_id", requireAuth, (req, res) => {
   console.log("getorditems req.body" + JSON.stringify(req.params));
-  Order.findOne({ _id: req.params.order_id }, {}).then(order => {
+  kafka.make_request(
+    "orders",
+    { path: "getorditems", params: req.params },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+
+        res.end();
+      }
+    }
+  );
+  /*Order.findOne({ _id: req.params.order_id }, {}).then(order => {
     if (!order) {
       let errors = "No orders Found";
       res.writeHead(202, {
@@ -173,12 +309,33 @@ router.get("/getorditems/:order_id", (req, res) => {
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
 
-router.post("/updateorstatus", (req, res) => {
+router.post("/updateorstatus", requireAuth, (req, res) => {
   console.log("updateorstatus req.body" + JSON.stringify(req.body));
-  Order.findOne({ _id: req.body.order_id }).then(order => {
+  kafka.make_request(
+    "orders",
+    { path: "updateorstatus", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+  /*Order.findOne({ _id: req.body.order_id }).then(order => {
     if (!order) {
       let errors = "No Order Found";
       res.writeHead(202, {
@@ -207,7 +364,7 @@ router.post("/updateorstatus", (req, res) => {
         .then(order => res.json(response))
         .catch(err => res.status(400).json(err));
     }
-  });
+  });*/
 });
 
 module.exports = router;

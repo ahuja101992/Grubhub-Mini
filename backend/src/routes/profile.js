@@ -6,11 +6,35 @@ const bcrypt = require("bcrypt");
 const secret = "CMPE_273_grbhub";
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+var requireAuth = passport.authenticate("jwt", { session: false });
+var kafka = require("../kafka/client");
 
-router.post("/getprofile", (req, res) => {
+router.post("/getprofile", requireAuth, (req, res) => {
   const email_id = req.body.email_id;
   console.log("getprofile req.body" + JSON.stringify(req.body));
-  User.findOne({ email_id: email_id }).then(user => {
+  kafka.make_request(
+    "profile",
+    { path: "getprofile", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+
+  /*User.findOne({ email_id: email_id }).then(user => {
     if (!user) {
       let errors = "No Account Found";
       res.writeHead(202, {
@@ -29,18 +53,41 @@ router.post("/getprofile", (req, res) => {
         last_name: user.last_name,
         email_id: user.email_id,
         phone_num: user.phone_num,
+        profile_image: user.profile_image,
         success: true,
         errMsg: ""
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
 
-router.post("/getresprofile", (req, res) => {
+router.post("/getresprofile", requireAuth, (req, res) => {
   const email_id = req.body.email_id;
   console.log("getresprofile req.body" + JSON.stringify(req.body));
-  Owner.findOne({ email_id: email_id }).then(owner => {
+  kafka.make_request(
+    "profile",
+    { path: "getresprofile", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+
+  /*Owner.findOne({ email_id: email_id }).then(owner => {
     if (!owner) {
       let errors = "No Account Found";
       res.writeHead(202, {
@@ -61,18 +108,41 @@ router.post("/getresprofile", (req, res) => {
         phone_num: owner.phone_num,
         resturant_name: owner.resturant_name,
         resturant_zipcode: owner.resturant_zipcode,
+        profile_image: owner.profile_image,
         cuisine: owner.cuisine,
         success: true,
         errMsg: ""
       };
       res.end(JSON.stringify(response));
     }
-  });
+  });*/
 });
-router.post("/updateprofile", (req, res) => {
+router.post("/updateprofile", requireAuth, (req, res) => {
   const email_id = req.body.email_id;
   console.log("updateprofile req.body" + JSON.stringify(req.body));
-  User.findOne({ email_id: email_id }).then(user => {
+  kafka.make_request(
+    "profile",
+    { path: "updateprofile", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+
+  /*User.findOne({ email_id: email_id }).then(user => {
     if (!user) {
       let errors = "No Account Found";
       res.writeHead(202, {
@@ -101,7 +171,8 @@ router.post("/updateprofile", (req, res) => {
             success: true,
             errMsg: "updated successfully ",
             first_name: userUpd.first_name,
-            last_name: userUpd.last_name
+            last_name: userUpd.last_name,
+            profile_image: userUpd.profile_image
           };
           User.findOneAndUpdate(
             { email_id: email_id },
@@ -118,13 +189,34 @@ router.post("/updateprofile", (req, res) => {
         });
       });
     }
-  });
+  });*/
 });
 
-router.post("/updateresprofile", (req, res) => {
+router.post("/updateresprofile", requireAuth, (req, res) => {
   const email_id = req.body.email_id;
   console.log("updateresprofile req.body" + JSON.stringify(req.body));
-  Owner.findOne({ email_id: email_id }).then(owner => {
+  kafka.make_request(
+    "profile",
+    { path: "updateresprofile", body: req.body },
+    function(err, results) {
+      console.log("in result");
+      console.log(results);
+      if (err) {
+        console.log("Inside err");
+        res.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside else");
+        res.json({
+          result: results
+        });
+        res.end();
+      }
+    }
+  );
+  /*Owner.findOne({ email_id: email_id }).then(owner => {
     if (!owner) {
       let errors = "No Account Found";
       res.writeHead(202, {
@@ -156,7 +248,8 @@ router.post("/updateresprofile", (req, res) => {
             success: true,
             errMsg: "updated successfully ",
             first_name: ownerUpd.first_name,
-            last_name: ownerUpd.last_name
+            last_name: ownerUpd.last_name,
+            profile_image: ownerUpd.profile_image
           };
           Owner.findOneAndUpdate(
             { email_id: email_id },
@@ -176,7 +269,7 @@ router.post("/updateresprofile", (req, res) => {
         });
       });
     }
-  });
+  });*/
 });
 
 module.exports = router;
