@@ -2,6 +2,7 @@
 
 # dependencies
 Calculator/Backend/node_modules
+kafka-backend/node_modules
 /.pnp
 .pnp.js
 
