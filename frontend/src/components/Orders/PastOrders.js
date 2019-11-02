@@ -36,7 +36,7 @@ class PastOrders extends Component {
   }
   getGetails = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     // id = 12;
     const ordData = {
@@ -61,8 +61,8 @@ class PastOrders extends Component {
   }
   render() {
     let pastOrders, ordItems;
-    console.log("getBPastSuccess " + this.props.getBPastSuccess);
-    if (this.props.getBPastSuccess === "true") {
+    // console.log("getBPastSuccess " + this.props.getBPastSuccess);
+    if (this.props.getBPastSuccess === true) {
       let orders = this.props.bpastOrds;
 
       pastOrders = orders.map(ord => {
@@ -74,19 +74,19 @@ class PastOrders extends Component {
                   <div class="image"></div>
                   <div class="details-container">
                     <div class="rest-name">
-                      Restaurant : {ord.resturant_name}
+                      Restaurant : {ord.restaurant_name}
                     </div>
-                    <div class="order-num">Order Num : {ord.ORDER_NUM}</div>
-                    <div class="order-status">Status : {ord.STATUS}</div>
+                    <div class="order-num">Order Num : {ord._id}</div>
+                    <div class="order-status">Status : {ord.status}</div>
                     <div class="order-total">
-                      Order Total: {ord.TOTAL_PRICE}
+                      Order Total: {ord.total_price}
                     </div>
                   </div>
                 </div>
                 <div class="right">
                   <div
                     class="btn btn-primary more-details"
-                    id={"showItem-" + ord.ORDER_ID}
+                    id={"showItem-" + ord._id}
                     onClick={this.getGetails}
                   >
                     Details
@@ -104,13 +104,13 @@ class PastOrders extends Component {
         return (
           <div class="item-modal-row row">
             <div class="col-sm-4 flex">
-              <div>{item.DISH_NAME}</div>
+              <div>{item.item_name}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.PRICE}</div>
+              <div>{item.item_price}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.QUANTITY}</div>
+              <div>{item.count}</div>
             </div>
           </div>
         );
