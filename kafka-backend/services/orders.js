@@ -41,6 +41,7 @@ function handle_request(msg, callback) {
       });
   } else if (msg.path === "getcurrorders") {
     console.log("getcurrorders msg.params" + JSON.stringify(msg.params));
+    // callback(null, { status: 202, response: " " });
     Order.find({ buy_email_id: msg.params.buy_email_id, status: "New" }).then(
       order => {
         if (!order) {

@@ -14,6 +14,7 @@ function handle_request(msg, callback) {
   console.log("Connected to mongodb");
   console.log("Message Path:" + msg.path);
   if (msg.path === "searchrest") {
+    // callback(null, { status: 202, response: " " });
     console.log("searchrest msg.body" + JSON.stringify(msg.query));
     let rest_zip = msg.query.zip;
     let dish = msg.query.dish;

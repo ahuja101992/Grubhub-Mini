@@ -9,6 +9,7 @@ var profile = require("./services/profile");
 var order = require("./services/orders");
 var sections = require("./services/sections");
 var imgupload = require("./services/imageUpload");
+var chats = require("./services/chats");
 
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
@@ -65,3 +66,4 @@ handleTopicRequest("search", search);
 handleTopicRequest("orders", order);
 handleTopicRequest("sections", sections);
 handleTopicRequest("imgupload", imgupload);
+handleTopicRequest("chat", chats);
