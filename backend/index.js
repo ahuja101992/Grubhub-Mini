@@ -2,8 +2,8 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var session = require("express-session");
-var http = require("http");
-var io = require("socket.io")();
+var http = require("http").createServer(app);
+var io = require("socket.io").listen(3011);
 var cors = require("cors");
 app.set("view engine", "ejs");
 var mysql = require("mysql");
@@ -71,6 +71,8 @@ let orders = require("./src/routes/orders");
 let search = require("./src/routes/search");
 let imgUpload = require("./src/routes/imgUpload");
 let chat = require("./src/routes/chat");
+let chats = require("./src/routes/chats");
+
 app.use("/test", testRoute);
 app.use("/users", users);
 app.use("/profile", profile);
@@ -78,6 +80,7 @@ app.use("/section", section);
 app.use("/orders", orders);
 app.use("/search", search);
 app.use("/image", imgUpload);
+app.use("/chats", chats);
 
 //registers our authentication routes with Express.
 app.listen(3010, err => {
@@ -85,13 +88,17 @@ app.listen(3010, err => {
   console.log("Server Listening on port 3010");
 });
 
-io.listen(3011);
-io.on("connection", function(socket) {
-  console.log("Connecting User");
-  socket.on("namespace id", namespace => {
-    socket.on(namespace, message => {
-      chat.saveMessage(namespace, JSON.parse(message));
-      io.emit(namespace, message);
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
+io.sockets.on("connection", function(socket) {
+  console.log("a user connected");
+  socket.on("ns_id", function(ns) {
+    console.log("namespace id :" + ns);
+    socket.on(ns, message => {
+      console.log("message :" + message);
+      chat.saveMessage(ns, JSON.parse(message));
+      io.emit(ns, message);
     });
   });
 });
