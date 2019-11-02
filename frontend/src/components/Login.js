@@ -31,22 +31,6 @@ class Login extends Component {
     this.loginBuyer = this.loginBuyer.bind(this);
     this.toSignUpBuy = this.toSignUpBuy.bind(this);
   }
-  // username change handler to update state variable with the text entered by the user
-  // usernameChangeHandler = e => {
-  //   console.log("this works ");
-  //   this.setState({
-  //     username: e.target.value
-  //   });
-  // };
-
-  // password change handler to update state variable with the text entered by the user
-  // passwordChangeHandler = e => {
-  //   e.preventDefault();
-  //   this.setState({
-  //     password: e.target.value
-  //   });
-  // };
-
   toSignUpBuy(e) {
     e.preventDefault();
     console.log("test 1");
@@ -66,13 +50,14 @@ class Login extends Component {
     this.props.fetchLogin(data);
   }
   render() {
+    console.log("testing auth flag: " + this.props.authFlag);
     var redirectVar, dispMsg;
     if (this.props.toSignup == true) {
       redirectVar = <Redirect to="/SignUpBuyer" />;
-    } else if (this.props.authFlag === "true") {
+    } else if (this.props.authFlag === true) {
       redirectVar = <Redirect to="/home" />;
     }
-    if (this.props.authFlag == "false" && this.props.errMsg != "") {
+    if (this.props.authFlag == false && this.props.errMsg != "") {
       dispMsg = (
         <div class="text-center">
           <p>{this.props.errMsg}</p>

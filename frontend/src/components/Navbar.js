@@ -12,20 +12,25 @@ class Navbar extends Component {
   handleLogoutBuy = () => {
     cookie.remove("cookieBuy", { path: "/" });
     sessionStorage.removeItem("email_id");
-    sessionStorage.removeItem("name");
+    sessionStorage.removeItem("last_name");
+    sessionStorage.removeItem("first_name");
+    sessionStorage.removeItem("token");
   };
   handleLogoutRes = () => {
     cookie.remove("cookieRes", { path: "/" });
     sessionStorage.removeItem("email_idRes");
+    sessionStorage.removeItem("Rest-name");
+    sessionStorage.removeItem("token");
     sessionStorage.removeItem("nameRes");
   };
-
   render() {
     let navLogin = null;
 
-    let redirectVar = null;
+    let redirectVar = null,
+      homeLink = null;
     if (cookie.load("cookieBuy")) {
       redirectVar = <Redirect to="/home" />;
+      homeLink = "/home";
       navLogin = (
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -37,6 +42,7 @@ class Navbar extends Component {
       );
     } else if (cookie.load("cookieRes")) {
       redirectVar = <Redirect to="/homeR" />;
+      homeLink = "/homeR";
       navLogin = (
         <ul class="nav navbar-nav navbar-right">
           <li>
@@ -52,13 +58,15 @@ class Navbar extends Component {
       <div>
         {redirectVar}
         <nav class="navbar navbar-light bg-light">
-          <a class="navbar-brand" href="#">
-            <img
-              src={require("./grubhub.png")}
-              width="100"
-              height="21"
-              alt=""
-            />
+          <a class="navbar-brand">
+            <Link to={homeLink}>
+              <img
+                src={require("./grubhub.png")}
+                width="100"
+                height="21"
+                alt=""
+              />
+            </Link>
           </a>
           {navLogin}
         </nav>

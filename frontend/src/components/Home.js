@@ -80,11 +80,11 @@ class Home extends Component {
     let details = null,
       cuisines = null;
     let restTable = null;
-    if (this.props.getRest == "true") {
+    if (this.props.getRest == true) {
       if (this.state.filter) {
         let cuisineList = [];
         let checkBoxes = document.getElementsByName("checkBox");
-        // console.log("chcekbox" + checkBoxes);
+        console.log("chcekbox" + checkBoxes);
         for (let i = 0; i < checkBoxes.length; i++) {
           if (checkBoxes[i].checked == true) {
             console.log("chcek " + checkBoxes[i].value);
@@ -99,34 +99,76 @@ class Home extends Component {
         details = newList.map(rest => {
           return (
             <div class="col-sm-4 restaurant">
-              <div class="rest-name" id={"rest-" + rest.restaurant_id}>
-                {rest.resturant_name}
+              <div class="restaurant">
+                <div class="rest-img">
+                  <img
+                    src={
+                      rest.profile_image
+                        ? rest.profile_image
+                        : require("./profilepic.png")
+                    }
+                    class="rounded profile-image"
+                    alt="avatar"
+                  />
+                </div>
+                <div class="rest-name" id={"rest-" + rest._id}>
+                  <h4>{rest.resturant_name}</h4>
+                </div>
+                <div class="rest-cuisine">{rest.cuisine}</div>
+                <Link
+                  className="btn btn-primary"
+                  to={{
+                    pathname: "/showmenu",
+                    data: {
+                      rest_id: rest._id,
+                      rest_name: rest.resturant_name,
+                      rest_email: rest.email_id
+                    }
+                  }}
+                >
+                  Checkout Restaurant
+                </Link>
               </div>
-              <div class="rest-cuisine">{rest.cuisine}</div>
             </div>
           );
         });
       } else {
         console.log("rest  0" + JSON.stringify(this.props.restaurants));
         details = this.props.restaurants.map(rest => {
-          let rest_id = rest.restaurant_id;
+          let rest_id = rest._id;
 
           return (
-            <div class="col-sm-4 restaurant">
-              <div class="rest-name">{rest.resturant_name}</div>
-              <div class="rest-cuisine">{rest.cuisine}</div>
-              <Link
-                className="btn btn-primary"
-                to={{
-                  pathname: "/showmenu",
-                  data: {
-                    rest_id: rest.restaurant_id,
-                    rest_name: rest.resturant_name
-                  }
-                }}
-              >
-                Checkout Restaurant
-              </Link>
+            <div class="col-sm-4">
+              <div class="restaurant">
+                <div class="rest-img">
+                  <img
+                    src={
+                      rest.profile_image
+                        ? rest.profile_image
+                        : require("./profilepic.png")
+                    }
+                    class="rounded profile-image"
+                    alt="avatar"
+                  />
+                </div>
+                <div class="rest-name">
+                  <h4>{rest.resturant_name}</h4>
+                </div>
+                <div class="rest-cuisine">{rest.cuisine}</div>
+                <Link
+                  className="btn btn-primary"
+                  to={{
+                    pathname: "/showmenu",
+                    data: {
+                      rest_id: rest._id,
+                      rest_name: rest.resturant_name,
+                      rest_email: rest.email_id
+                    }
+                  }}
+                >
+                  Checkout Restaurant
+                </Link>
+              </div>
             </div>
           );
         });

@@ -12,15 +12,25 @@ import {
   GET_DISHESBUY,
   PLACE_ORDER,
   BCURR_ORDER,
-  BPAST_ORDER
+  BPAST_ORDER,
+  ADD_SECTION,
+  GET_SECTION,
+  DEL_SECTION,
+  GET_CHATLIST
 } from "./types";
 import axios from "axios";
 export function addDish(data) {
   return function(dispatch) {
     // console.log("addDish");
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/insertdish", data)
+      .post("http://localhost:3010/section/insertdish", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(addDishes(response)));
   };
@@ -34,9 +44,15 @@ function addDishes(returndata) {
 export function getDishes(data) {
   return function(dispatch) {
     // console.log(" data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getdishes", data)
+      .get("http://localhost:3010/section/getsection/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(getDish(response)));
   };
@@ -49,9 +65,13 @@ function getDish(returndata) {
 export function getCurrentDish(data) {
   return function(dispatch) {
     // console.log(" data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getcurrentdish", data)
+      .post("http://localhost:3010/getcurrentdish", data, { headers: headers })
       .then(response => response)
       .then(response => dispatch(currentDish(response)));
   };
@@ -65,9 +85,13 @@ function currentDish(returndata) {
 export function nameUpdate(data) {
   return function(dispatch) {
     // console.log(" data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getcurrentdish", data)
+      .post("http://localhost:3010/getcurrentdish", data, { headers: headers })
       .then(response => response)
       .then(response => dispatch(currentDish(response)));
   };
@@ -76,9 +100,15 @@ export function nameUpdate(data) {
 export function deleteDish(data) {
   return function(dispatch) {
     // console.log(" data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/deletedish", data)
+      .post("http://localhost:3010/section/deletedish", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(delDish(response)));
   };
@@ -91,10 +121,16 @@ function delDish(returndata) {
 
 export function updateDishes(data) {
   return function(dispatch) {
-    console.log("Del  data " + data);
+    // console.log("Del  data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/updatedish", data)
+      .post("http://localhost:3010/section/updatedish", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(updDish(response)));
   };
@@ -104,9 +140,15 @@ function updDish(returndata) {
 } //////
 export function rPastOrders(data) {
   return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getrespastorders", data)
+      .get("http://localhost:3010/orders/getrespastorders/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(rPastOrds(response)));
   };
@@ -117,9 +159,15 @@ function rPastOrds(returndata) {
 export function rCurrOrders(data) {
   return function(dispatch) {
     // console.log("Del  data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getrescurrorders", data)
+      .get("http://localhost:3010/orders/getrescurrorders/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(rCurrOrds(response)));
   };
@@ -129,10 +177,15 @@ function rCurrOrds(returndata) {
 }
 export function getItems(data) {
   return function(dispatch) {
-    // console.log("Del  data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getorditems", data)
+      .get("http://localhost:3010/orders/getorditems/" + data.ORDER_ID, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(itemsget(response)));
   };
@@ -142,10 +195,15 @@ function itemsget(returndata) {
 }
 export function cancelOrder(data) {
   return function(dispatch) {
-    console.log("Cancel Order data " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/updateorstatus", data)
+      .post("http://localhost:3010/orders/updateorstatus", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(cancelOrd(response)));
   };
@@ -155,10 +213,15 @@ function cancelOrd(returndata) {
 }
 export function updateStatus(data) {
   return function(dispatch) {
-    console.log("Update " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/updateorstatus", data)
+      .post("http://localhost:3010/orders/updateorstatus", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(updStatus(response)));
   };
@@ -168,10 +231,15 @@ function updStatus(returndata) {
 }
 export function getBuyMenu(data) {
   return function(dispatch) {
-    console.log("Update " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getbuydishes", data)
+      .get("http://localhost:3010/section/getbuydishes/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(getbMenu(response)));
   };
@@ -181,10 +249,15 @@ function getbMenu(returndata) {
 }
 export function placeOrder(data) {
   return function(dispatch) {
-    console.log("Update " + data);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/insertorder", data)
+      .post("http://localhost:3010/orders/insertorder", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(plcOrder(response)));
   };
@@ -194,11 +267,23 @@ function plcOrder(returndata) {
 }
 export function bCurrOrders(data) {
   return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    console.log("it was here");
     axios.defaults.withCredentials = true;
+    // return new Promise(function(resolve, reject) {
     axios
-      .post("http://localhost:3010/getcurrorders", data)
+      .get("http://localhost:3010/orders/getcurrorders/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
-      .then(response => dispatch(bCurrOrds(response)));
+      .then(response => {
+        dispatch(bCurrOrds(response));
+        // resolve();
+      });
+    // });
   };
 }
 function bCurrOrds(returndata) {
@@ -206,13 +291,90 @@ function bCurrOrds(returndata) {
 }
 export function bPastOrders(data) {
   return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getpastorders", data)
+      .get("http://localhost:3010/orders/getpastorders/" + data.email_id, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(bPastOrds(response)));
   };
 }
 function bPastOrds(returndata) {
   return { type: BPAST_ORDER, payload: returndata };
+}
+export function addSections(data) {
+  return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3010/section/addsection", data, {
+        headers: headers
+      })
+      .then(response => response)
+      .then(response => dispatch(addSec(response)));
+  };
+}
+function addSec(returndata) {
+  return { type: ADD_SECTION, payload: returndata };
+}
+export function getSections(data) {
+  // console.log(JSON.stringify(data));
+  return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    axios.defaults.withCredentials = true;
+    axios
+      .get("http://localhost:3010/section/getsection/" + data.email_id, {
+        headers: headers
+      })
+      .then(response => response)
+      .then(response => dispatch(getSec(response)));
+  };
+}
+function getSec(returndata) {
+  return { type: GET_SECTION, payload: returndata };
+}
+export function delSections(data) {
+  return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    axios.defaults.withCredentials = true;
+    axios
+      .post("http://localhost:3010/section/delsection", data, {
+        headers: headers
+      })
+      .then(response => response)
+      .then(response => dispatch(delSec(response)));
+  };
+}
+function delSec(returndata) {
+  return { type: DEL_SECTION, payload: returndata };
+}
+export function getOwnerChats(data) {
+  return function(dispatch) {
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    axios.defaults.withCredentials = true;
+    axios
+      .get("http://localhost:3010/chats/getownerchats/" + data.email_id)
+      .then(response => response)
+      .then(response => dispatch(getChats(response)));
+  };
+}
+function getChats(returndata) {
+  return { type: GET_CHATLIST, payload: returndata };
 }

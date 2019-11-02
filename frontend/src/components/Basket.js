@@ -17,8 +17,8 @@ class Basket extends Component {
             <ul>
               {cartItems.map(item => (
                 <li>
-                  <b>{item.DISH_NAME}</b>X {item.count}={" "}
-                  {item.DISH_PRICE * item.count}
+                  <b>{item.dish_name}</b>X {item.count}={" "}
+                  {item.dish_price * item.count}
                   <button
                     className="btn btn-danger"
                     onClick={e => this.props.handleRemoveFromCart(e, item)}
@@ -28,7 +28,7 @@ class Basket extends Component {
                 </li>
               ))}
             </ul>
-            Total: {cartItems.reduce((a, c) => a + c.DISH_PRICE * c.count, 0)}
+            Total: {cartItems.reduce((a, c) => a + c.dish_price * c.count, 0)}
           </div>
         )}
         {cartItems.length > 0 ? (

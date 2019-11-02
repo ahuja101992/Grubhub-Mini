@@ -25,3 +25,7 @@ export const GET_DISHESBUY = "GET_DISHESBUY";
 export const PLACE_ORDER = "PLACE_ORDER";
 export const BCURR_ORDER = "BCURR_ORDER";
 export const BPAST_ORDER = "BPAST_ORDER";
+export const ADD_SECTION = "ADD_SECTION";
+export const GET_SECTION = "GET_SECTION";
+export const DEL_SECTION = "DEL_SECTION";
+export const GET_CHATLIST = "GET_CHATLIST";

@@ -15,11 +15,15 @@ import HomeR from "./Resturants/HomeR";
 import Profileres from "./Resturants/ProfileRes";
 import Profileresedit from "./Resturants/ProfileResEdit";
 import AddDish from "./Resturants/AddDish";
+import AddSection from "./Resturants/AddSection";
+import ShowSections from "./Resturants/ShowSections";
 import ShowDishes from "./Resturants/ShowDishes";
 import Navbar from "./Navbar";
 import UpdateDish from "./Resturants/UpdateDish";
 import ShowROrders from "./Resturants/ShowROrders";
 import ShowRPastOrders from "./Resturants/ShowRPastOrders";
+import Chat from "./Chat/chat";
+import ChatList from "./Chat/chatlist";
 
 import ShowMenu from "./ShowMenu";
 import Checkout from "./Checkout";
@@ -43,11 +47,13 @@ class Main extends Component {
         <Route path="/profileres" component={Profileres} />
         <Route path="/buyerorders" component={BuyerOrders} />
         <Route path="/adddish" component={AddDish} />
+        <Route path="/addsection" component={AddSection} />
+        <Route path="/showsection" component={ShowSections} />
         <Route path="/showdishes" component={ShowDishes} />
-        {/* <Route path="/updatedish" component={UpdateDish} /> */}
+        <Route path="/chat" component={Chat} />
         <Route path="/showrorders" component={ShowROrders}></Route>
         <Route path="/showrpastorders" component={ShowRPastOrders}></Route>
-
+        <Route path="/chatlist" component={ChatList}></Route>
         <Route path="/showmenu" component={ShowMenu} />
         <Route path="/checkout" component={Checkout}></Route>
         {/* <Route path="/currentordbuy" component={CurrentOrders}></Route>
