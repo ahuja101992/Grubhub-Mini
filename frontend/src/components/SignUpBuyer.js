@@ -101,7 +101,6 @@ class SignUpBuyer extends Component {
                         type="text"
                         class="form-control"
                         placeholder=" "
-                        required
                       />
                     </div>
                   </div>

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import cookie from "react-cookies";
 import Basket from "./Basket";
+// import Pagination from "./pagination";
+import Pagination from "react-js-pagination";
 import { getBuyMenu } from "../actions/orderAction";
 import "./ShowMenu.css";
 
@@ -29,17 +31,29 @@ class ShowMenu extends Component {
     this.state = {
       rest_name: "",
       rest_id: null,
-      cartItems: []
+      cartItems: [],
+      currentPage: 1,
+      setCurrentPage: 1,
+      postPerPage: 1,
+      setPostPerPage: 1,
+      activePage: 1
     };
     this.handleAddToCart = this.handleAddToCart.bind(this);
     this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+  }
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+    // console.log
+    // this.setState({ activePage: pageNumber });
   }
   handleAddToCart(e, product) {
     this.setState(state => {
       const cartItems = state.cartItems;
       let productAlreadyInCart = false;
       cartItems.forEach(item => {
-        if (item.DISH_ID === product.DISH_ID) {
+        if (item._id === product._id) {
           productAlreadyInCart = true;
           item.count++;
         }
@@ -55,7 +69,7 @@ class ShowMenu extends Component {
     console.log("testing");
     this.setState(state => {
       const cartItems = state.cartItems.filter(
-        element => element.DISH_ID != items.DISH_ID
+        element => element._id != items._id
       );
       sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
       return cartItems;
@@ -66,12 +80,14 @@ class ShowMenu extends Component {
     // console.log("cmponent mount");
     // const email = sessionStorage.getItem("email_idRes")
     console.log("props value" + this.props.location.data);
-    let rest_id, rest_name;
+    let rest_id, rest_name, rest_email_id;
     if (this.props.location.data === undefined) {
       rest_id = sessionStorage.getItem("res-order");
       rest_name = sessionStorage.getItem("res-name");
+      rest_email_id = sessionStorage.getItem("rest-email-id");
     } else {
       rest_id = this.props.location.data.rest_id;
+      rest_email_id = this.props.location.data.rest_email;
       rest_name = this.props.location.data.rest_name;
     }
 
@@ -79,12 +95,15 @@ class ShowMenu extends Component {
     // let rest_name = "abc";
     sessionStorage.setItem("res-order", rest_id);
     sessionStorage.setItem("res-name", rest_name);
+    sessionStorage.setItem("rest-email-id", rest_email_id);
+
     this.setState({
       rest_name: rest_name
     });
-    console.log(rest_id + "   " + rest_name);
+    console.log(rest_id + "   " + rest_name + "   " + rest_email_id);
     const data = {
-      rest_id: rest_id
+      rest_id: rest_id,
+      email_id: rest_email_id
     };
     this.props.getBuyMenu(data);
     if (sessionStorage.getItem("cartItems")) {
@@ -100,7 +119,8 @@ class ShowMenu extends Component {
       redirectVar = <Redirect to="/login" />;
     }
     console.log("props form link", this.props.location.data);
-    let dishDetails = null;
+    let dishDetails = null,
+      paginate = null;
     let obj = {},
       redirectCheckout;
     if (this.state.proceedChecout) {
@@ -112,36 +132,60 @@ class ShowMenu extends Component {
         />
       );
     }
-    if (this.props.getBuyDishSuccess === "true") {
-      let dishType = [...new Set(this.props.dishesBuy.map(x => x.TYPE))];
-      console.log(dishType);
+    if (this.props.getBuyDishSuccess === true) {
+      // // let dishType = (this.props.dishesBuy.map(x => x.TYPE))];
+      // console.log(dishType);
 
-      for (let i = 0; i < dishType.length; i++) {
-        let tempArray = this.props.dishesBuy.filter(
-          dish => dish.TYPE == dishType[i]
-        );
+      // for (let i = 0; i < dishType.length; i++) {
+      //   let tempArray = this.props.dishesBuy.filter(
+      //     dish => dish.TYPE == dishType[i]
+      //   );
 
-        obj[dishType[i]] = {
-          items: tempArray
-        };
-      }
+      //   obj[dishType[i]] = {
+      //     items: tempArray
+      //   };
+      // }
+      var retDishes = this.props.dishesBuy;
+      var len = retDishes.length;
+      // console.log("currentPosts length" + len);
 
-      dishDetails = Object.keys(obj).map(currObj => {
+      const indexOfLastPost = this.state.activePage * this.state.postPerPage;
+      // console.log("indexOfLastPost" + indexOfLastPost);
+      const indexOfFirstPost = indexOfLastPost - this.state.postPerPage;
+      // console.log("indexOfFirstPost" + indexOfFirstPost);
+      const currentPosts = retDishes.slice(indexOfFirstPost, indexOfLastPost);
+      // console.log("currentPosts" + JSON.stringify(currentPosts));
+      paginate = (
+        <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={this.state.postPerPage}
+          totalItemsCount={len}
+          pageRangeDisplayed
+          onChange={this.handlePageChange}
+        ></Pagination>
+      );
+
+      dishDetails = currentPosts.map(currObj => {
         return (
           <div class="category">
-            <h4>{currObj}</h4>
-            {obj[currObj].items.map(items => {
+            <h4>{currObj.section_name}</h4>
+            {currObj.rest_dish.map(items => {
               return (
                 <div class="dish-row flex col-sm-12">
                   <div class="dish-left">
                     <img
+                      src={
+                        items.dish_image
+                          ? items.dish_image
+                          : require("./dish_image.jpg")
+                      }
                       class="dish-image-container"
                       alt="No Image Available"
                     />
                     <div class="dish-details">
-                      <div class="col-sm">{items.DISH_NAME}</div>
-                      <div class="col-sm">{items.DISH_DESC}</div>
-                      <div class="col-sm">$ {items.DISH_PRICE}</div>
+                      <div class="col-sm">{items.dish_name}</div>
+                      <div class="col-sm">{items.dish_desc}</div>
+                      <div class="col-sm">$ {items.dish_price}</div>
                     </div>
                   </div>
                   <div class="dish-right">
@@ -150,7 +194,7 @@ class ShowMenu extends Component {
                       class="btn btn-primary"
                       value="Add to Cart"
                       onClick={e => this.handleAddToCart(e, items)}
-                      id={"add-" + items.DISH_ID}
+                      id={"add-" + items._id}
                     />
                   </div>
                 </div>
@@ -170,6 +214,7 @@ class ShowMenu extends Component {
         ></Basket>
         <h2>{this.state.rest_name}</h2>
         <div class="col-sm-12 list-container">{dishDetails}</div>
+        <div>{paginate}</div>
       </div>
     );
   }
