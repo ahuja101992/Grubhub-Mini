@@ -2,19 +2,23 @@ import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import "./AddDish.css";
-import { addDish } from "../../actions/orderAction";
+import axios from "axios";
+import { addDish, getSections } from "../../actions/orderAction";
 
 function mapStateToProps(store) {
   return {
     dishSuccess: store.order.dishSuccess,
     success: store.order.success,
-    errMsg: store.order.errMsg
+    errMsg: store.order.errMsg,
+    sections: store.order.sections,
+    getSecSuccess: store.order.getSecSuccess
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addDish: data => dispatch(addDish(data))
+    addDish: data => dispatch(addDish(data)),
+    getSec: data => dispatch(getSections(data))
   };
 }
 
@@ -35,6 +39,16 @@ class AddDish extends Component {
     this.typeChange = this.typeChange.bind(this);
     this.priceChange = this.priceChange.bind(this);
     this.addDish = this.addDish.bind(this);
+    this.enableAddImage = this.enableAddImage.bind(this);
+  }
+  componentDidMount() {
+    let email_id = sessionStorage.getItem("email_idRes");
+    // let email_id = "akshit@gmail.com";
+    const data = {
+      email_id: email_id
+    };
+    // console.log("data" + JSON.stringify(data));
+    this.props.getSec(data);
   }
   nameChange = e => {
     this.setState({
@@ -67,23 +81,55 @@ class AddDish extends Component {
       dish_price: this.state.price,
       email_id: sessionStorage.getItem("email_idRes")
     };
+    console.log(data);
     this.props.addDish(data);
     this.setState({ dishAdd: true });
   };
+  enableAddImage() {
+    const { dishName, dishDesc } = this.state;
+    return dishName.length > 0;
+  }
+  // onFileChange(files) {
+  //   if (files == null || files.length == 0) return;
+  //   let file = files[0];
 
+  //   const data = new FormData();
+  //   data.append("image", file, file.name);
+  //   let dish_name = this.state.dishName;
+  //   console.log("dish_name" + dish_name);
+  //   let email_id = sessionStorage.getItem("email_idRes");
+  //   axios.post(
+  //     `http://localhost:3010/image/dishimgupload?dishname=` +
+  //       dish_name +
+  //       `&email_id=` +
+  //       email_id,
+  //     data
+  //   )
+  //   .then(res => {
+  //     if (res.status === 200) {
+  //       this.setState({ profile_image: res.data.imageUrl });
+  //       console.log("success", this.state.profile_image);
+  //     }
+  //   })
+  //   .catch(err => console.error(err));
+  // }
   render() {
-    let dispMsg;
-    console.log("success 123" + this.props.success);
-    // if (this.props.getRest == "true")
-    if (this.props.success === "true") {
+    let dispMsg, currSections;
+    // console.log("success 123" + this.props.success);
+    if (this.props.success === true) {
       dispMsg = (
         <div class="text-center">
-          <p>{this.props.errMsg}</p>
+          <p>Dish Added</p>
         </div>
       );
     }
-    if (this.props.success == "true") {
-      console.log("test success");
+    if (this.props.getSecSuccess == true) {
+      currSections = this.props.sections;
+      currSections = currSections.map(section => {
+        return (
+          <option value={section.section_name}>{section.section_name}</option>
+        );
+      });
     }
 
     return (
@@ -91,8 +137,9 @@ class AddDish extends Component {
         <div class="col-sm-11 add-container">
           <div class="left-container col-sm-4">
             <h6>Photo</h6>
-            <div class="image-container"></div>
-            <div class="image-description">Image description goes here</div>
+            <div class="image-container text-center">
+              Add image after ading dish
+            </div>
           </div>
           <form class="col-sm-5" onSubmit={this.addDish}>
             <p>{this.props.errMsg}</p>
@@ -117,19 +164,17 @@ class AddDish extends Component {
 
               <select class="form-control" required onChange={this.typeChange}>
                 <option></option>
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-                <option value="Appetizers">Appetizers</option>
+                {currSections}
               </select>
 
               <h6>Price</h6>
               <input
-                required
-                type="number"
+                pattern="[/^\d*\.?\d*$/]{1,5}"
+                type="text"
                 class="form-control col-sm-3"
                 placeholder="Price"
                 onChange={this.priceChange}
+                required
               />
             </div>
             <button class="col-sm-8 update-btn btn btn-primary" type="submit">

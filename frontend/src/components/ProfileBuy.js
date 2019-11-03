@@ -15,6 +15,7 @@ function mapStateToProps(store) {
     last_name: store.login.last_name,
     email_id: store.login.email_id,
     phone_num: store.login.phone_num,
+    profile_image: store.login.profile_image,
     toProfilePage: store.login.toProfileEdit
   };
 }
@@ -88,6 +89,18 @@ class Profilebuy extends Component {
             <div class="col-md-8">
               <div class="container emp-profile">
                 <div class="row profile-container">
+                  <div>
+                    <img
+                      src={
+                        this.props.profile_image
+                          ? this.props.profile_image
+                          : require("./profilepic.png")
+                      }
+                      class="rounded profile-image"
+                      alt="avatar"
+                    />
+                  </div>
+
                   <div class="col-md-6">
                     <div class="profile-head">
                       <h5>

@@ -4,7 +4,8 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import cookie from "react-cookies";
 import { getProfile, updateProfile } from "../actions/loginActions";
-
+import axios from "axios";
+import "./profile.css";
 function mapStateToProps(store) {
   return {
     errMsg: store.login.errMsg,
@@ -29,10 +30,11 @@ class Profilebuyedit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null
+      file: null,
+      profile_image: ""
     };
     this.updateProfile = this.updateProfile.bind(this);
-    this.imageUpload = this.imageUpload.bind(this);
+    // this.imageUpload = this.imageUpload.bind(this);
   }
   componentDidMount() {
     const email = localStorage.getItem("email_id");
@@ -48,9 +50,29 @@ class Profilebuyedit extends Component {
     //   });
     // });
   }
-  imageUpload = e => {
-    this.setState({ file: e.target.files[0] });
-  };
+  onFileChange(files) {
+    if (files == null || files.length == 0) return;
+    let file = files[0];
+
+    const data = new FormData();
+    data.append("image", file, file.name);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    let email_id = sessionStorage.getItem("email_id");
+    axios
+      .post(`http://localhost:3010/image/${email_id}/imgupload`, data, {
+        headers: headers
+      })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({ profile_image: res.data.imageUrl.imageUrl });
+          console.log("success", this.state.profile_image);
+        }
+      })
+      .catch(err => console.error(err));
+  }
   updateProfile(e) {
     e.preventDefault();
     console.log("inside" + e.target.length);
@@ -89,7 +111,7 @@ class Profilebuyedit extends Component {
     }
     console.log(this.props.success + " " + this.props.errMsg);
     if (
-      this.props.success == "true" &&
+      this.props.success == true &&
       this.props.errMsg == "updated successfully "
     ) {
       redirectVar = <Redirect to="/profilebuy" />;
@@ -105,8 +127,13 @@ class Profilebuyedit extends Component {
             <div class="col-md-3">
               <div class="text-center">
                 <img
-                  src={require("./profilepic.png")}
-                  class="rounded"
+                  src={
+                    this.state.profile_image
+                      ? this.state.profile_image
+                      : require("./profilepic.png")
+                  }
+                  class="rounded profile-image"
+                  // className={("height:150px", "width:150px", "padding: 10px")}
                   alt="avatar"
                 />
 
@@ -114,7 +141,7 @@ class Profilebuyedit extends Component {
                   className="btn btn-default"
                   type="file"
                   accept="image/*"
-                  onChange={this.imageUpload}
+                  onChange={e => this.onFileChange(e.target.files)}
                   class="form-control"
                 />
               </div>
