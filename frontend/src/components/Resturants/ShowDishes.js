@@ -4,7 +4,7 @@ import { getDishes, deleteDish, updateDishes } from "../../actions/orderAction";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
-
+import axios from "axios";
 // or less ideally
 // import { Button } from "react-bootstrap";
 
@@ -48,6 +48,9 @@ class ShowDishes extends Component {
       currDish_Name: null,
       CurrDish_price: null,
       currDish_DESC: null,
+      currSection_name: null,
+      currDish_image: require("./profilepic.png"),
+      dish_image: "",
       delId: null
     };
   }
@@ -74,12 +77,15 @@ class ShowDishes extends Component {
 
   submitEdit = e => {
     const data = {
+      email_id: sessionStorage.getItem("email_idRes"),
       dish_id: this.state.currDish_id,
       dish_name: this.state.currDish_Name,
       dish_desc: this.state.currDish_DESC,
-      dish_price: this.state.CurrDish_price
+      dish_price: this.state.CurrDish_price,
+      section_name: this.state.currSection_name
     };
     console.log("submit data to update :" + data);
+    this.setState({ show: false });
     this.props.updateDishes(data);
   };
   cancelEdit = e => {
@@ -87,7 +93,7 @@ class ShowDishes extends Component {
   };
   confirmDelete = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
 
     this.setState({ showDelete: true, delId: id });
   };
@@ -95,6 +101,7 @@ class ShowDishes extends Component {
     console.log("id obtained is " + this.state.delId);
 
     const data = {
+      email_id: sessionStorage.getItem("email_idRes"),
       dish_id: this.state.delId
     };
     console.log(data);
@@ -109,22 +116,61 @@ class ShowDishes extends Component {
     // console.log("inside" + e.target.id);
     this.setState({ show: true });
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
-    let rec = this.props.dishes.filter(dish => dish.DISH_ID == id);
-    console.log(JSON.stringify(rec));
-    this.setState(
-      {
-        currDish_Name: rec[0].DISH_NAME,
-        currDish_DESC: rec[0].DISH_DESC,
-        currDish_id: rec[0].DISH_ID,
-        CurrDish_price: rec[0].DISH_PRICE
-      },
-      () => {
-        this.setState({ show: false });
-      }
-    );
+    let retDishes = this.props.dishes;
+    let dishes1 = retDishes.map(section => {
+      let dish = section.rest_dish.map(dish => {
+        if (dish._id === id) {
+          // console.log("test section name  :" + section.section_name);
+          this.setState({
+            email_id: sessionStorage.getItem("email_idRes"),
+            currDish_Name: dish.dish_name,
+            currDish_DESC: dish.dish_desc,
+            currDish_id: dish._id,
+            CurrDish_price: dish.dish_price,
+            currDish_image: dish.dish_image,
+            currSection_name: section.section_name
+          });
+        }
+        console.log("dishes" + JSON.stringify(dish));
+      });
+    });
   };
+  onFileChange(files) {
+    if (files == null || files.length == 0) return;
+    let file = files[0];
+    const data = new FormData();
+    data.append("image", file, file.name);
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    let dish_name = this.state.currDish_Name;
+    console.log(
+      "dish_name" + dish_name + "section Name" + this.state.currSection_name
+    );
+    let email_id = sessionStorage.getItem("email_idRes");
+    axios
+      .post(
+        `http://localhost:3010/image/dishimgupload?dish_id=` +
+          this.state.currDish_id +
+          `&email_id=` +
+          email_id +
+          `&section_name=` +
+          this.state.currSection_name,
+        data,
+        { headers: headers }
+      )
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({ dish_image: res.data.imageUrl.imageUrl });
+          console.log("success", this.state.dish_image);
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
   componentDidMount() {
     // console.log("cmponent mount");
     const email = sessionStorage.getItem("email_idRes");
@@ -139,9 +185,9 @@ class ShowDishes extends Component {
   render() {
     let dishDetails = null;
     let obj = {};
-    // console.log("response data :" + JSON.stringify(this.props.dishes));
-    if (this.props.getDishSuccess === "true") {
-      let distType = [...new Set(this.props.dishes.map(x => x.TYPE))];
+
+    if (this.props.getDishSuccess === true) {
+      /*let distType = [...new Set(this.props.dishes.map(x => x.TYPE))];
       for (let i = 0; i < distType.length; i++) {
         let tempArray = this.props.dishes.filter(
           dish => dish.TYPE == distType[i]
@@ -150,21 +196,30 @@ class ShowDishes extends Component {
         obj[distType[i]] = {
           items: tempArray
         };
-      }
-      dishDetails = Object.keys(obj).map(currObj => {
+      }*/
+      obj = this.props.dishes;
+      // console.log("response data :" + JSON.stringify(obj));
+      dishDetails = obj.map(currObj => {
         return (
           <div>
-            <h4>{currObj}</h4>
-            {obj[currObj].items.map(items => {
+            <h4>{currObj.section_name}</h4>
+            {currObj.rest_dish.map(items => {
               return (
                 <div class="dish-row row">
-                  <div class="col-sm">{items.DISH_NAME}</div>
-                  <div class="col-sm">{items.DISH_PRICE}</div>
+                  <div class="col-sm">
+                    <img
+                      src={items.dish_image}
+                      class="rounded dish-image"
+                      alt="avatar"
+                    />
+                  </div>
+                  <div class="col-sm">{items.dish_name}</div>
+                  <div class="col-sm">{items.dish_price}</div>
                   <div class="col-sm">
                     <div
                       class="btn btn-primary"
                       name="edit_btn"
-                      id={"edit-" + items.DISH_ID}
+                      id={"edit-" + items._id}
                       onClick={this.editDish}
                     >
                       Edit
@@ -174,7 +229,7 @@ class ShowDishes extends Component {
                     <div
                       class="btn btn-danger"
                       name="edit_btn"
-                      id={"delete-" + items.DISH_ID}
+                      id={"delete-" + items._id}
                       onClick={this.confirmDelete}
                     >
                       Delete
@@ -239,6 +294,23 @@ class ShowDishes extends Component {
 
               <div class="modal-row">
                 <label>Photo:</label>
+                <img
+                  src={
+                    this.state.dish_image
+                      ? this.state.dish_image
+                      : this.state.currDish_image
+                  }
+                  class="rounded dish-image"
+                  alt="avatar"
+                />
+
+                <input
+                  className="btn btn-default"
+                  type="file"
+                  accept="image/*"
+                  onChange={e => this.onFileChange(e.target.files)}
+                  class="form-control"
+                />
               </div>
 
               <div class="modal-row"></div>

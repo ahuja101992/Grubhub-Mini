@@ -42,3 +42,37 @@
   justify-content: space-evenly;
   margin: 10px 0;
 }
+
+.section-container {
+  min-height: calc(100vh - 76px);
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-section {
+  margin: 15px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-wrapper {
+  min-height: calc(100vh - 76px);
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-row {
+  padding: 15px;
+  align-items: center;
+}
+.dish-image {
+  height: 150px;
+  width: 150px;
+}
