@@ -60,7 +60,7 @@ class ShowRRest extends Component {
 
   ReadyOrd = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     const ordData = {
       order_id: id,
@@ -70,7 +70,7 @@ class ShowRRest extends Component {
   };
   prepOrd = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     const ordData = {
       order_id: id,
@@ -80,7 +80,7 @@ class ShowRRest extends Component {
   };
   deliverOrd = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     const ordData = {
       order_id: id,
@@ -90,7 +90,7 @@ class ShowRRest extends Component {
   };
   getGetails = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     // id = 12;
     const ordData = {
@@ -101,7 +101,7 @@ class ShowRRest extends Component {
   };
   cancelOr = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
 
     // id = 12;
     const ordData = {
@@ -138,7 +138,8 @@ class ShowRRest extends Component {
     //   this.setState({ reload: rand });
     //   console.log("kksjj" + this.state.reload);
     // }
-    if (this.props.getCurrSuccess == "true") {
+    console.log(JSON.stringify(this.props.currOrds));
+    if (this.props.getCurrSuccess == true) {
       //
       let orders = this.props.currOrds;
       currOrders = orders.map(ord => {
@@ -147,17 +148,17 @@ class ShowRRest extends Component {
           prep = true,
           ready = true,
           deliver = true;
-        if (ord.STATUS == "New") {
+        if (ord.status == "New") {
           cancelflg = false;
           prep = false;
           ready = true;
           deliver = true;
-        } else if (ord.STATUS == "Preparing") {
+        } else if (ord.status == "Preparing") {
           cancelflg = false;
           prep = true;
           ready = false;
           deliver = true;
-        } else if (ord.STATUS == "Ready") {
+        } else if (ord.status == "Ready") {
           cancelflg = false;
           prep = true;
           ready = true;
@@ -170,9 +171,9 @@ class ShowRRest extends Component {
                 <div class="left">
                   <div class="image"></div>
                   <div class="details-container">
-                    <div class="order-num">{ord.ORDER_NUM}</div>
+                    <div class="order-num">{ord._id}</div>
                     <div class="buyer-name">
-                      {"Name : " + ord.first_name + " " + ord.last_name}
+                      {"Name : " + ord.user.first_name}
                     </div>
                     <div class="buyer-address">
                       {"Address : " +
@@ -186,15 +187,15 @@ class ShowRRest extends Component {
                     </div>
 
                     <div class="order-price">
-                      {"Price : " + ord.TOTAL_PRICE}
+                      {"Price : " + ord.total_price}
                     </div>
-                    <div class="order-status">{"Status : " + ord.STATUS}</div>
+                    <div class="order-status">{"Status : " + ord.status}</div>
                     <div class="flex button-container">
                       <input
                         type="button"
                         class="btn btn-danger btn-sm"
                         value="Cancel Order"
-                        id={"cancelOr-" + ord.ORDER_ID}
+                        id={"cancelOr-" + ord._id}
                         disabled={cancelflg}
                         onClick={this.cancelOr}
                       />
@@ -203,14 +204,14 @@ class ShowRRest extends Component {
                         class="btn btn-primary btn-sm"
                         value="Preparing"
                         disabled={prep}
-                        id={"statusCh-" + ord.ORDER_ID}
+                        id={"statusCh-" + ord._id}
                         onClick={this.prepOrd}
                       />
                       <input
                         type="button"
                         class="btn btn-primary btn-sm"
                         value="Ready"
-                        id={"statusCh-" + ord.ORDER_ID}
+                        id={"statusCh-" + ord._id}
                         disabled={ready}
                         onClick={this.ReadyOrd}
                       />
@@ -219,7 +220,7 @@ class ShowRRest extends Component {
                         class="btn btn-primary btn-sm"
                         value="Deliver"
                         disabled={deliver}
-                        id={"statusCh-" + ord.ORDER_ID}
+                        id={"statusCh-" + ord._id}
                         onClick={this.deliverOrd}
                       />
                     </div>
@@ -228,7 +229,7 @@ class ShowRRest extends Component {
                 <div class="right">
                   <div
                     class="btn btn-primary more-details"
-                    id={"showItem-" + ord.ORDER_ID}
+                    id={"showItem-" + ord._id}
                     onClick={this.getGetails}
                   >
                     Details
@@ -246,13 +247,13 @@ class ShowRRest extends Component {
         return (
           <div class="item-modal-row row">
             <div class="col-sm-4 flex">
-              <div>{item.DISH_NAME}</div>
+              <div>{item.item_name}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.PRICE}</div>
+              <div>{item.item_price}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.QUANTITY}</div>
+              <div>{item.count}</div>
             </div>
           </div>
         );

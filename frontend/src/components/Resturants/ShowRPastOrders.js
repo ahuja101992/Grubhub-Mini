@@ -40,7 +40,7 @@ class ShowRPastOrders extends Component {
   }
   getGetails = e => {
     let getIdArr = e.target.id.split("-");
-    let id = parseInt(getIdArr[1]);
+    let id = getIdArr[1];
     console.log("id obtained is " + id);
     // id = 12;
     const ordData = {
@@ -69,7 +69,7 @@ class ShowRPastOrders extends Component {
       redirectVar = <Redirect to="/reslogin" />;
     }
     let pastOrders, ordItems;
-    if (this.props.getPastSuccess == "true") {
+    if (this.props.getPastSuccess == true) {
       // console.log(JSON.stringify(orders));
       let orders = this.props.pastOrds;
       //   console.log(JSON.stringify(orders));
@@ -81,9 +81,9 @@ class ShowRPastOrders extends Component {
                 <div class="left">
                   <div class="image"></div>
                   <div class="details-container">
-                    <div class="order-num">{ord.ORDER_NUM}</div>
+                    <div class="order-num">{ord._id}</div>
                     <div class="buyer-name">
-                      {"Name : " + ord.first_name + " " + ord.last_name}
+                      {"Name : " + ord.user.first_name}
                     </div>
                     <div class="buyer-address">
                       {"Address : " +
@@ -97,15 +97,15 @@ class ShowRPastOrders extends Component {
                     </div>
 
                     <div class="order-price">
-                      {"Price : " + ord.TOTAL_PRICE}
+                      {"Price : " + ord.total_price}
                     </div>
-                    <div class="order-status">{"Status : " + ord.STATUS}</div>
+                    <div class="order-status">{"Status : " + ord.status}</div>
                   </div>
                 </div>
                 <div class="right">
                   <div
                     class="btn btn-primary more-details"
-                    id={"showItem-" + ord.ORDER_ID}
+                    id={"showItem-" + ord._id}
                     onClick={this.getGetails}
                   >
                     Details
@@ -123,13 +123,13 @@ class ShowRPastOrders extends Component {
         return (
           <div class="item-modal-row row">
             <div class="col-sm-4 flex">
-              <div>{item.DISH_NAME}</div>
+              <div>{item.item_name}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.PRICE}</div>
+              <div>{item.item_price}</div>
             </div>
             <div class="col-sm-4 flex">
-              <div>{item.QUANTITY}</div>
+              <div>{item.count}</div>
             </div>
           </div>
         );
