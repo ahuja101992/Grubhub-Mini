@@ -17,7 +17,8 @@ function mapStateToProps(store) {
     toProfilePage: store.login.toProfileEdit,
     rest_name: store.login.rest_name,
     rest_zip: store.login.rest_zip,
-    cuisine: store.login.cuisine
+    cuisine: store.login.cuisine,
+    profile_image: store.login.profile_image
   };
 }
 
@@ -88,6 +89,17 @@ class Profileres extends Component {
             <div class="col-md-8">
               <div class="container emp-profile">
                 <div class="row profile-container">
+                  <div>
+                    <img
+                      src={
+                        this.props.profile_image
+                          ? this.props.profile_image
+                          : require("./profilepic.png")
+                      }
+                      class="rounded profile-image"
+                      alt="avatar"
+                    />
+                  </div>
                   <div class="col-md-6">
                     <div class="profile-head">
                       <h5>{this.props.rest_name}</h5>

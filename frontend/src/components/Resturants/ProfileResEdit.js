@@ -3,6 +3,8 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
+import axios from "axios";
+import "./profile.css";
 import { getResProfile, updateResProfile } from "../../actions/loginActions";
 
 function mapStateToProps(store) {
@@ -17,7 +19,8 @@ function mapStateToProps(store) {
     rest_zip: store.login.rest_zip,
     cuisine: store.login.cuisine,
     phone_num: store.login.phone_num,
-    success: store.login.success
+    success: store.login.success,
+    profile_image: store.login.profile_image
   };
 }
 
@@ -32,7 +35,8 @@ class Profileresedit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorMsg: ""
+      errorMsg: "",
+      profile_image: ""
     };
     this.updateProfile = this.updateProfile.bind(this);
   }
@@ -43,6 +47,29 @@ class Profileresedit extends Component {
     };
     console.log("data    " + JSON.stringify(data));
     this.props.getResProfile(data);
+  }
+  onFileChange(files) {
+    if (files == null || files.length == 0) return;
+    let file = files[0];
+    var headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token")
+    };
+    const data = new FormData();
+    data.append("image", file, file.name);
+
+    let email_id = sessionStorage.getItem("email_idRes");
+    axios
+      .post(`http://localhost:3010/image/${email_id}/resimgupload`, data, {
+        headers: headers
+      })
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({ profile_image: res.data.imageUrl.imageUrl });
+          console.log("success", this.state.profile_image);
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   updateProfile(e) {
@@ -90,7 +117,7 @@ class Profileresedit extends Component {
     }
     console.log(this.props.success + " " + this.props.errMsg);
     if (
-      this.props.success == "true" &&
+      this.props.success == true &&
       this.props.errMsg == "updated successfully "
     ) {
       redirectVar = <Redirect to="/profileres" />;
@@ -106,13 +133,22 @@ class Profileresedit extends Component {
             <div class="col-md-3">
               <div class="text-center">
                 <img
-                  src={require("./profilepic.png")}
-                  class="rounded"
+                  src={
+                    this.state.profile_image
+                      ? this.state.profile_image
+                      : require("./profilepic.png")
+                  }
+                  class="rounded profile-image"
                   alt="avatar"
                 />
-                <h6>Upload a different photo...</h6>
 
-                <input type="file" class="form-control" />
+                <input
+                  className="btn btn-default"
+                  type="file"
+                  accept="image/*"
+                  onChange={e => this.onFileChange(e.target.files)}
+                  class="form-control"
+                />
               </div>
             </div>
 
