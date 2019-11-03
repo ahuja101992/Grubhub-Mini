@@ -10,14 +10,14 @@ function mapStateToProps(store) {
   return {
     errMsg: store.login.errMsg,
     authFlag: store.login.authFlag,
-    toSignup: store.login.toSignup,
-    toProfile: store.login.toProfile
+    toSignup: store.login.toSignup
+    // toProfile: store.login.toProfile
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toProfilePage: data => dispatch(toProfile())
+    // toProfilePage: data => dispatch(toProfile())
   };
 }
 
@@ -28,7 +28,7 @@ class HomeR extends Component {
 
   render() {
     let redirectVar = null;
-    console.log(this.props.toProfile);
+    // console.log(this.props.toProfile);
     if (!cookie.load("cookieRes")) {
       redirectVar = <Redirect to="/reslogin" />;
     }
@@ -73,6 +73,22 @@ class HomeR extends Component {
                     <div class="link-container">
                       <Link value="Add Dish" to={{ pathname: "/adddish" }}>
                         Add Dish
+                      </Link>
+                    </div>
+                    <div class="link-container">
+                      <Link
+                        value="Add Section"
+                        to={{ pathname: "/addsection" }}
+                      >
+                        Add Section
+                      </Link>
+                    </div>
+                    <div class="link-container">
+                      <Link
+                        value="Show Section"
+                        to={{ pathname: "/showsection" }}
+                      >
+                        Show Section
                       </Link>
                     </div>
                   </div>
