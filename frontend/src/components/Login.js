@@ -6,7 +6,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import cookie from "react-cookies";
 import { fetchLogin, toSignUp } from "../actions/loginActions";
-
+// import cookie from "react-cookie";
 // import cookie from "react-cookies";
 // import { Redirect } from "react-router";
 
@@ -55,6 +55,11 @@ class Login extends Component {
     if (this.props.toSignup == true) {
       redirectVar = <Redirect to="/SignUpBuyer" />;
     } else if (this.props.authFlag === true) {
+      cookie.save("cookieBuy", {
+        maxAge: 900000,
+        httpOnly: false,
+        path: "/"
+      });
       redirectVar = <Redirect to="/home" />;
     }
     if (this.props.authFlag == false && this.props.errMsg != "") {
@@ -65,8 +70,13 @@ class Login extends Component {
       );
     }
     // let redirectVar = null;
-    if (cookie.load("cookieBuy")) {
+    if (this.props.authFlag === true) {
       redirectVar = <Redirect to="/home" />;
+      cookie.save("cookieBuy", {
+        maxAge: 900000,
+        httpOnly: false,
+        path: "/"
+      });
     } else {
       redirectVar = <Redirect to="/login" />;
     }

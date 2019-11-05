@@ -38,8 +38,13 @@ class ResLogin extends Component {
 
   render() {
     var redirectVar, dispMsg;
-    if (cookie.load("cookieRes") && this.props.authFlag === true) {
+    if (this.props.authFlag === true) {
       redirectVar = <Redirect to="/homeR" />;
+      cookie.save("cookieRes", {
+        maxAge: 900000,
+        httpOnly: false,
+        path: "/"
+      });
     } else {
       redirectVar = <Redirect to="/reslogin" />;
     }
