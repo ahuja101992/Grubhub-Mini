@@ -52,10 +52,10 @@ app.use(function(req, res, next) {
 });
 
 mongoose.set("useCreateIndex", true);
-mongoose.set("useUnifiedTopology", true);
-//issue with a depricated- found it
+mongoose.set("useUnifiedTopology", true); //issue with a depricated- found it
+// mongoose.set("poolSize", 10);
 mongoose
-  .connect(CONNECTION_URL, { useNewUrlParser: true })
+  .connect(CONNECTION_URL, { useNewUrlParser: true, poolSize: 10 })
   .then(() => console.log("Connected Successfully to MongoDB"))
   .catch(err => console.error(err));
 
