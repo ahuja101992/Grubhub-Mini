@@ -50,7 +50,9 @@ class Chat extends Component {
     let ns_id, owner_id, user_id;
     let propsLoc = this.props;
     console.log("Socket URL " + socketUrl);
-    const socket = io("http://localhost:3011");
+    const socket = io(
+      "http://ec2-54-183-161-83.us-west-1.compute.amazonaws.com:3011"
+    );
     let first_name = sessionStorage.getItem("first_name");
     // first_name = "test";
     let ns = "";
