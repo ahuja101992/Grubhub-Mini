@@ -48,7 +48,7 @@ class Chat extends Component {
   }
   componentDidMount() {
     let ns_id, owner_id, user_id;
-    let propsLoc = this.props.location;
+    let propsLoc = this.props;
     console.log("Socket URL " + socketUrl);
     const socket = io("http://localhost:3011");
     let first_name = sessionStorage.getItem("first_name");
@@ -58,7 +58,7 @@ class Chat extends Component {
     owner_id = "test@gmail.com";
     user_id = "chets@gmil.com";
     ns_id = user_id + "-" + owner_id;
-    console.log("props value" + propsLoc);
+    console.log("props value" + JSON.stringify(propsLoc));
     if (cookie.load("cookieBuy")) {
       if (propsLoc === undefined)
         owner_id = sessionStorage.getItem("owner_email");
@@ -87,18 +87,20 @@ class Chat extends Component {
       },
       () => {
         socket.emit("ns_id", this.state.ns);
-        const msgList = this.state.messages; //value not assigning
+        let messageList = [];
+
         socket.on(this.state.ns, msg => {
+          messageList = this.state.messageList; //value not assigning
           console.log("message in component didmount" + msg);
           msg = JSON.parse(msg);
           // console.log("message after parse " + msg);
-          msgList.push({
+          messageList.push({
             author: first_name == msg.sender ? "me" : "them",
             type: "text",
             data: { text: msg.message }
           });
           this.setState({
-            messageList: msgList
+            messageList: messageList
           });
           // this.setState({
           //   messageList: [
