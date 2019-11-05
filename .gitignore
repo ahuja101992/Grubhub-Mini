@@ -5,6 +5,8 @@ Calculator/Backend/node_modules
 kafka-backend/node_modules
 /.pnp
 .pnp.js
+backend/ReadMe.txt
+backend/src/routes/imgUpload.js
 
 # testing
 /coverage
