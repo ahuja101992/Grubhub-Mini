@@ -8,7 +8,6 @@ import Basket from "./Basket";
 import Pagination from "react-js-pagination";
 import { getBuyMenu } from "../actions/orderAction";
 import "./ShowMenu.css";
-
 function mapStateToProps(store) {
   return {
     success: store.order.success,
@@ -45,8 +44,6 @@ class ShowMenu extends Component {
   handlePageChange(pageNumber) {
     console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
-    // console.log
-    // this.setState({ activePage: pageNumber });
   }
   handleAddToCart(e, product) {
     this.setState(state => {
@@ -66,14 +63,20 @@ class ShowMenu extends Component {
     });
   }
   handleRemoveFromCart(e, items) {
-    console.log("testing");
-    this.setState(state => {
-      const cartItems = state.cartItems.filter(
-        element => element._id != items._id
-      );
+    // let cartItems = ;
+    let cartItems = this.state.cartItems.filter(
+      element => element._id != items._id
+    );
+    this.setState({ cartItems: cartItems }, () => {
       sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
-      return cartItems;
     });
+    // this.setState(state => {
+    //   const cartItems = state.cartItems.filter(
+    //     element => element._id != items._id
+    //   );
+    //   sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
+    //   return cartItems;
+    // });
   }
 
   componentDidMount() {
@@ -147,14 +150,9 @@ class ShowMenu extends Component {
       // }
       var retDishes = this.props.dishesBuy;
       var len = retDishes.length;
-      // console.log("currentPosts length" + len);
-
       const indexOfLastPost = this.state.activePage * this.state.postPerPage;
-      // console.log("indexOfLastPost" + indexOfLastPost);
       const indexOfFirstPost = indexOfLastPost - this.state.postPerPage;
-      // console.log("indexOfFirstPost" + indexOfFirstPost);
       const currentPosts = retDishes.slice(indexOfFirstPost, indexOfLastPost);
-      // console.log("currentPosts" + JSON.stringify(currentPosts));
       paginate = (
         <Pagination
           activePage={this.state.activePage}
@@ -214,7 +212,7 @@ class ShowMenu extends Component {
         ></Basket>
         <h2>{this.state.rest_name}</h2>
         <div class="col-sm-12 list-container">{dishDetails}</div>
-        <div>{paginate}</div>
+        <div class="pagination-showmenu">{paginate}</div>
       </div>
     );
   }
