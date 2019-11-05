@@ -101,15 +101,25 @@ class HomeR extends Component {
                     <p class="card-text">
                       Check and edit your profile details instantly
                     </p>
-                    <p class="card-text"> </p>
-
-                    <Link
-                      name="MyAccount-Owner"
-                      value="My Account"
-                      to={{ pathname: "/Profileres" }}
-                    >
-                      My Account
-                    </Link>
+                    <p class="card-text"></p>
+                    <div class="link-container">
+                      <Link
+                        name="MyAccount-Owner"
+                        value="My Account"
+                        to={{ pathname: "/Profileres" }}
+                      >
+                        My Account
+                      </Link>
+                    </div>
+                    <div class="link-container">
+                      <Link
+                        name="MyAccount-Owner"
+                        value="My Chats"
+                        to={{ pathname: "/chatlist" }}
+                      >
+                        My Chats
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

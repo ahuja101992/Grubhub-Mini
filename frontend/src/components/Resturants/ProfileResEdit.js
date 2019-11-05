@@ -5,6 +5,7 @@ import cookie from "react-cookies";
 import { connect } from "react-redux";
 import axios from "axios";
 import "./profile.css";
+import connectionUrl from "../../config/config";
 import { getResProfile, updateResProfile } from "../../actions/loginActions";
 
 function mapStateToProps(store) {
@@ -60,9 +61,13 @@ class Profileresedit extends Component {
 
     let email_id = sessionStorage.getItem("email_idRes");
     axios
-      .post(`http://localhost:3010/image/${email_id}/resimgupload`, data, {
-        headers: headers
-      })
+      .post(
+        "http://" + connectionUrl + "/image/${email_id}/resimgupload",
+        data,
+        {
+          headers: headers
+        }
+      )
       .then(res => {
         if (res.status === 200) {
           this.setState({ profile_image: res.data.imageUrl.imageUrl });

@@ -19,6 +19,7 @@ import {
   GET_CHATLIST
 } from "./types";
 import axios from "axios";
+import connectionUrl from "../config/config";
 export function addDish(data) {
   return function(dispatch) {
     // console.log("addDish");
@@ -28,7 +29,7 @@ export function addDish(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/section/insertdish", data, {
+      .post("http://" + connectionUrl + "/section/insertdish", data, {
         headers: headers
       })
       .then(response => response)
@@ -50,7 +51,7 @@ export function getDishes(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/section/getsection/" + data.email_id, {
+      .get("http://" + connectionUrl + "/section/getsection/" + data.email_id, {
         headers: headers
       })
       .then(response => response)
@@ -71,7 +72,9 @@ export function getCurrentDish(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getcurrentdish", data, { headers: headers })
+      .post("http://" + connectionUrl + "/getcurrentdish", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(currentDish(response)));
   };
@@ -91,7 +94,9 @@ export function nameUpdate(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/getcurrentdish", data, { headers: headers })
+      .post("http://" + connectionUrl + "/getcurrentdish", data, {
+        headers: headers
+      })
       .then(response => response)
       .then(response => dispatch(currentDish(response)));
   };
@@ -106,7 +111,7 @@ export function deleteDish(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/section/deletedish", data, {
+      .post("http://" + connectionUrl + "/section/deletedish", data, {
         headers: headers
       })
       .then(response => response)
@@ -128,7 +133,7 @@ export function updateDishes(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/section/updatedish", data, {
+      .post("http://" + connectionUrl + "/section/updatedish", data, {
         headers: headers
       })
       .then(response => response)
@@ -146,9 +151,12 @@ export function rPastOrders(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/orders/getrespastorders/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/orders/getrespastorders/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => response)
       .then(response => dispatch(rPastOrds(response)));
   };
@@ -165,9 +173,12 @@ export function rCurrOrders(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/orders/getrescurrorders/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/orders/getrescurrorders/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => response)
       .then(response => dispatch(rCurrOrds(response)));
   };
@@ -183,7 +194,7 @@ export function getItems(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/orders/getorditems/" + data.ORDER_ID, {
+      .get("http://" + connectionUrl + "/orders/getorditems/" + data.ORDER_ID, {
         headers: headers
       })
       .then(response => response)
@@ -201,7 +212,7 @@ export function cancelOrder(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/orders/updateorstatus", data, {
+      .post("http://" + connectionUrl + "/orders/updateorstatus", data, {
         headers: headers
       })
       .then(response => response)
@@ -219,7 +230,7 @@ export function updateStatus(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/orders/updateorstatus", data, {
+      .post("http://" + connectionUrl + "/orders/updateorstatus", data, {
         headers: headers
       })
       .then(response => response)
@@ -237,9 +248,12 @@ export function getBuyMenu(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/section/getbuydishes/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/section/getbuydishes/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => response)
       .then(response => dispatch(getbMenu(response)));
   };
@@ -255,7 +269,7 @@ export function placeOrder(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/orders/insertorder", data, {
+      .post("http://" + connectionUrl + "/orders/insertorder", data, {
         headers: headers
       })
       .then(response => response)
@@ -275,9 +289,12 @@ export function bCurrOrders(data) {
     axios.defaults.withCredentials = true;
     // return new Promise(function(resolve, reject) {
     axios
-      .get("http://localhost:3010/orders/getcurrorders/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/orders/getcurrorders/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => response)
       .then(response => {
         dispatch(bCurrOrds(response));
@@ -297,9 +314,12 @@ export function bPastOrders(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/orders/getpastorders/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/orders/getpastorders/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => response)
       .then(response => dispatch(bPastOrds(response)));
   };
@@ -315,7 +335,7 @@ export function addSections(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/section/addsection", data, {
+      .post("http://" + connectionUrl + "/section/addsection", data, {
         headers: headers
       })
       .then(response => response)
@@ -334,7 +354,7 @@ export function getSections(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/section/getsection/" + data.email_id, {
+      .get("http://" + connectionUrl + "/section/getsection/" + data.email_id, {
         headers: headers
       })
       .then(response => response)
@@ -352,7 +372,7 @@ export function delSections(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/section/delsection", data, {
+      .post("http://" + connectionUrl + "/section/delsection", data, {
         headers: headers
       })
       .then(response => response)
@@ -370,7 +390,7 @@ export function getOwnerChats(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/chats/getownerchats/" + data.email_id)
+      .get("http://" + connectionUrl + "/chats/getownerchats/" + data.email_id)
       .then(response => response)
       .then(response => dispatch(getChats(response)));
   };

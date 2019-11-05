@@ -7,6 +7,8 @@ import cookie from "react-cookies";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import connectionUrl from "../../config/config";
+
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 function mapStateToProps(store) {
   return {
@@ -93,9 +95,12 @@ class CurrentOrders extends Component {
     };
     axios.defaults.withCredentials = true;
     axios
-      .get("http://localhost:3010/orders/getcurrorders/" + data.email_id, {
-        headers: headers
-      })
+      .get(
+        "http://" + connectionUrl + "/orders/getcurrorders/" + data.email_id,
+        {
+          headers: headers
+        }
+      )
       .then(response => {
         console.log("testing res" + JSON.stringify(response));
         this.setState({

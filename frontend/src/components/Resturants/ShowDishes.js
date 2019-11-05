@@ -5,6 +5,7 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import connectionUrl from "../../config/config";
 // or less ideally
 // import { Button } from "react-bootstrap";
 
@@ -153,7 +154,9 @@ class ShowDishes extends Component {
     let email_id = sessionStorage.getItem("email_idRes");
     axios
       .post(
-        `http://localhost:3010/image/dishimgupload?dish_id=` +
+        "http://" +
+          connectionUrl +
+          "/image/dishimgupload?dish_id=" +
           this.state.currDish_id +
           `&email_id=` +
           email_id +

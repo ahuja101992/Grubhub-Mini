@@ -15,6 +15,7 @@ import {
   GET_DISHESBUY
 } from "./types";
 // import {rooturl} from './../c'
+import connectionUrl from "../config/config";
 import axios from "axios";
 
 export function fetchLogin(data) {
@@ -23,10 +24,11 @@ export function fetchLogin(data) {
       "Content-Type": "application/json",
       Authorization: "Bearer " + sessionStorage.getItem("token")
     };
-    console.log("testing successful. Redux working");
+    var test = "http://" + connectionUrl + "/users/loginbuyer";
+    console.log("testing successful. Redux working" + test);
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/users/loginbuyer", data, {
+      .post("http://" + connectionUrl + "/users/loginbuyer", data, {
         headers: headers
       })
       .then(response => response)
@@ -63,7 +65,7 @@ export function sign_in(data) {
     console.log("Inside signIn");
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/users/registerbuyer", data)
+      .post("http://" + connectionUrl + "/users/registerbuyer", data)
       .then(response => response)
       .then(response => dispatch(signupUpd(response)));
   };
@@ -82,7 +84,7 @@ export function sign_in_res(data) {
     console.log("Inside signIn for res");
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/users/loginrest", data)
+      .post("http://" + connectionUrl + "/users/loginrest", data)
       .then(response => response)
       .then(response => dispatch(signinresUpd(response)));
   };
@@ -110,7 +112,7 @@ export function sign_up_res(data) {
   return function(dispatch) {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/users/registerowner", data)
+      .post("http://" + connectionUrl + "/users/registerowner", data)
       .then(response => response)
       .then(response => dispatch(signupresUpd(response)));
   };
@@ -136,7 +138,7 @@ export function getProfile(data) {
     };
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/profile/getprofile", data, {
+      .post("http://" + connectionUrl + "/profile/getprofile", data, {
         headers: headers
       })
       .then(response => response)
@@ -170,7 +172,7 @@ export function updateProfile(data) {
     axios.defaults.withCredentials = true;
     //make a post request with the user data
     axios
-      .post("http://localhost:3010/profile/updateprofile", data, {
+      .post("http://" + connectionUrl + "/profile/updateprofile", data, {
         headers: headers
       })
       .then(response => response)
@@ -207,7 +209,7 @@ export function getResProfile(data) {
     console.log("data " + JSON.stringify(data));
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/profile/getresprofile", data, {
+      .post("http://" + connectionUrl + "/profile/getresprofile", data, {
         headers: headers
       })
       .then(response => response)
@@ -230,7 +232,7 @@ export function updateResProfile(data) {
     console.log("inside update profile");
     axios.defaults.withCredentials = true;
     axios
-      .post("http://localhost:3010/profile/updateresprofile", data, {
+      .post("http://" + connectionUrl + "/profile/updateresprofile", data, {
         headers: headers
       })
       .then(response => response)
@@ -265,7 +267,9 @@ export function getSearchRes(data) {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        "http://localhost:3010/search/searchrest/?dish=" +
+        "http://" +
+          connectionUrl +
+          "/search/searchrest/?dish=" +
           data.dish_name +
           "&zip=" +
           data.rest_zip,
