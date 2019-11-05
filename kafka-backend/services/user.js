@@ -64,43 +64,44 @@ function handle_request(msg, callback) {
         };
         callback(null, { status: 202, response });
         // return res.end(JSON.stringify(response));
-      }
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (isMatch) {
-          const payload = {
-            id: user._id,
-            // name: user.first_name,
-            email_id: user.email_id
-          };
-          jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
-            if (err) callback(null, { status: 500, err });
-            //   res.status(500).json({ error: "Error signing token", raw: err });
-            // res.cookie("cookieBuy", {
-            //   maxAge: 900000,
-            //   httpOnly: false,
-            //   path: "/"
-            // }); //// has to be implemented on the node application
-            response = {
-              success: true,
-              token: `Bearer ${token}`,
-              authFlag: true,
-              errMsg: "",
-              first_name: user.first_name,
-              last_name: user.last_name,
+      } else {
+        bcrypt.compare(password, user.password).then(isMatch => {
+          if (isMatch) {
+            const payload = {
+              id: user._id,
+              // name: user.first_name,
               email_id: user.email_id
             };
-            callback(null, { status: 200, response });
-          });
-        } else {
-          let errors = "Username/Password is incorrect";
-          response = {
-            authFlag: false,
-            success: true,
-            errMsg: errors
-          };
-          callback(null, { status: 202, response });
-        }
-      });
+            jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
+              if (err) callback(null, { status: 500, err });
+              //   res.status(500).json({ error: "Error signing token", raw: err });
+              // res.cookie("cookieBuy", {
+              //   maxAge: 900000,
+              //   httpOnly: false,
+              //   path: "/"
+              // }); //// has to be implemented on the node application
+              response = {
+                success: true,
+                token: `Bearer ${token}`,
+                authFlag: true,
+                errMsg: "",
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email_id: user.email_id
+              };
+              callback(null, { status: 200, response });
+            });
+          } else {
+            let errors = "Username/Password is incorrect";
+            response = {
+              authFlag: false,
+              success: true,
+              errMsg: errors
+            };
+            callback(null, { status: 202, response });
+          }
+        });
+      }
     });
   } else if (msg.path === "registerowner") {
     console.log("registerowner req data: " + JSON.stringify(msg.body));

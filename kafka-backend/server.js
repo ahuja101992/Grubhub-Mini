@@ -20,8 +20,8 @@ const CONNECTION_URL =
   "mongodb+srv://root:root@grubhub-b4ptc.mongodb.net/grubhub?retryWrites=true&w=majority";
 var passport = require("passport");
 mongoose.set("useCreateIndex", true);
-mongoose.set("useUnifiedTopology", true);
-//issue with a depricated- found it
+mongoose.set("useUnifiedTopology", true); //issue with a depricated- found it
+// mongoose.set("poolSize", 10);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, poolSize: 10 })
   .then(() => console.log("Connected Successfully to MongoDB"))

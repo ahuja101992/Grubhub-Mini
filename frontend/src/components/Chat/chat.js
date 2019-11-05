@@ -3,6 +3,9 @@ import io from "socket.io-client";
 import cookie from "react-cookies";
 import { Launcher } from "react-chat-window";
 import axios from "axios";
+import connectionUrl from "../../config/config";
+import { socketUrl } from "../../config/config";
+
 class Chat extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +14,8 @@ class Chat extends Component {
       ns: "",
       user_id: "",
       owner_id: "",
-      messageList: []
+      messageList: [],
+      first_name: ""
     };
   }
   _onMessageWasSent(message) {
@@ -20,7 +24,7 @@ class Chat extends Component {
       console.log("ns id :" + this.state.ns);
       let msg = {
         message: message.data.text,
-        sender: "test"
+        sender: this.state.first_name
         // sender: sessionStorage.getItem("res-name")
       };
       console.log(msg + " " + JSON.stringify(msg));
@@ -71,23 +75,24 @@ class Chat extends Component {
   componentDidMount() {
     let ns_id, owner_id, user_id;
     let propsLoc = this.props.location;
+    console.log("Socket URL " + socketUrl);
     const socket = io("http://localhost:3011");
     let first_name = sessionStorage.getItem("first_name");
-    first_name = "test";
+    // first_name = "test";
     let ns = "";
     /// to be deleted
     owner_id = "test@gmail.com";
     user_id = "chets@gmil.com";
     ns_id = user_id + "-" + owner_id;
-    console.log("props value" + propsLoc.data);
+    console.log("props value" + propsLoc);
     if (cookie.load("cookieBuy")) {
       if (propsLoc === undefined)
         owner_id = sessionStorage.getItem("owner_email");
       else owner_id = propsLoc.owner_email;
       sessionStorage.setItem("owner_email", owner_id);
       user_id = sessionStorage.getItem("email_id");
-      owner_id = "test@gmail.com";
-      user_id = "chets@gmil.com";
+      // owner_id = "test@gmail.com";
+      // user_id = "chets@gmil.com";
       ns_id = user_id + "-" + owner_id;
       // ns_id = ns;
     } else if (cookie.load("cookieRes")) {
@@ -103,7 +108,8 @@ class Chat extends Component {
         socket: socket,
         user_id: user_id,
         owner_id: owner_id,
-        ns: ns_id
+        ns: ns_id,
+        first_name: first_name
       },
       () => {
         socket.emit("ns_id", this.state.ns);
@@ -140,7 +146,7 @@ class Chat extends Component {
     axios.defaults.withCredentials = true;
     console.log("ns_id=" + ns_id);
     axios
-      .get("http://localhost:3010/chats/getchatdetails/" + ns_id)
+      .get("http://" + connectionUrl + "/chats/getchatdetails/" + ns_id)
       .then(response => {
         // console.log("map data " + JSON.stringify(response.data.chat));
 

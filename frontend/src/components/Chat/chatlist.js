@@ -27,8 +27,8 @@ class ChatList extends Component {
     };
   }
   componentDidMount() {
-    let email_id = sessionStorage.getItem("res_emailid");
-    email_id = "test@gmail.com";
+    let email_id = sessionStorage.getItem("email_idRes");
+    // email_id = "test@gmail.com";
     const data = { email_id: email_id };
     this.props.getChats(data);
   }
