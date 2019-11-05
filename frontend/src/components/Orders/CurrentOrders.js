@@ -8,6 +8,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import connectionUrl from "../../config/config";
+import Chat from "../Chat/chat";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 function mapStateToProps(store) {
@@ -45,12 +46,24 @@ class CurrentOrders extends Component {
     this.state = {
       show: false,
       items: null,
-      getBCurrSuccess: false
+      getBCurrSuccess: false,
+      enableChat: false,
+      orderToChat: {},
+      chatOwnerEmail: ""
     };
     this.getGetails = this.getGetails.bind(this);
     this.closeDetails = this.closeDetails.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.connectChat = this.connectChat.bind(this);
   }
+  connectChat = (ord, rest_email_id) => {
+    this.setState({
+      enableChat: true,
+      orderToChat: ord,
+      chatOwnerEmail: rest_email_id
+    });
+  };
+
   onDragEnd(result) {
     // dropped outside the list
     if (!result.destination) {
@@ -118,7 +131,7 @@ class CurrentOrders extends Component {
     // });
   }
   render() {
-    let currOrders, ordItems, draggable;
+    let currOrders, ordItems, draggable, chatWindow;
     // console.log("getBCurrSuccess " + JSON.stringify(this.props.bcurrOrds));
     // if (this.props.getBCurrSuccess === true) {
     if (this.state.getBCurrSuccess === true) {
@@ -170,10 +183,13 @@ class CurrentOrders extends Component {
                                   </div>
                                 </div>
                                 <Link
-                                  to={{
-                                    pathname: "/Chat",
-                                    owner_email: ord.rest_email_id
-                                  }}
+                                  // to={{
+                                  //   pathname: "/Chat",
+                                  //   owner_email: ord.rest_email_id
+                                  // }}
+                                  onClick={() =>
+                                    this.connectChat(ord, ord.rest_email_id)
+                                  }
                                 >
                                   Chat Now
                                 </Link>
@@ -226,9 +242,20 @@ class CurrentOrders extends Component {
         </div>
       );
     }
+    if (this.state.enableChat) {
+      let ord = this.state.orderToChat;
+      let owner_email = this.state.chatOwnerEmail;
+      console.log("order details: " + JSON.stringify(ord) + "  " + owner_email);
+      chatWindow = (
+        <div>
+          <Chat owner_email={owner_email}></Chat>
+        </div>
+      );
+    }
 
     return (
       <div class="col-sm-11 order-container">
+        {chatWindow}
         <div class="row">
           <div class="col-sm-9 order-lists">
             <div class="current-container">

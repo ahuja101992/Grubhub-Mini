@@ -29,32 +29,6 @@ class Chat extends Component {
       };
       console.log(msg + " " + JSON.stringify(msg));
       this.state.socket.emit(this.state.ns, JSON.stringify(msg));
-      // let msg = message.data.text;
-      // this.state.socket.on(this.state.ns, msg => {
-      //   console.log("message " + msg);
-      //   msg = JSON.parse(msg);
-      //   this.state.messageList.push(msg);
-      //   this.setState({
-      //     messageList: this.state.messageList
-      //   });
-      // });
-      // this.state.socket.on(this.state.ns, message => {
-      //   this.state.messageList.push(message);
-      //   this.setState({
-      //     messageList: this.state.messageList
-      //   });
-      // });
-      // socket.emit("ns_id", "123");
-      // this.setState({
-      //   messageList: [
-      //     ...this.state.messageList,
-      //     {
-      //       author: "them",
-      //       type: "text",
-      //       data: msg
-      //     }
-      //   ]
-      // });
     }
   }
 
@@ -113,18 +87,18 @@ class Chat extends Component {
       },
       () => {
         socket.emit("ns_id", this.state.ns);
-        const messageList = this.state.messageList;
+        const msgList = this.state.messages; //value not assigning
         socket.on(this.state.ns, msg => {
           console.log("message in component didmount" + msg);
           msg = JSON.parse(msg);
           // console.log("message after parse " + msg);
-          messageList.push({
-            author: "them",
+          msgList.push({
+            author: first_name == msg.sender ? "me" : "them",
             type: "text",
             data: { text: msg.message }
           });
           this.setState({
-            messageList: messageList
+            messageList: msgList
           });
           // this.setState({
           //   messageList: [
@@ -157,6 +131,7 @@ class Chat extends Component {
             data: { text: msg.message }
           }))
         });
+        // console.log(" state " + JSON.stringify(this.state.messageList));
       })
       .catch(err => {
         console.log("Error getting data." + err);
