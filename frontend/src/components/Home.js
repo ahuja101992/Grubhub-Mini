@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { toProfile, getSearchRes } from "../actions/loginActions";
+import Pagination from "react-js-pagination";
 
 function mapStateToProps(store) {
   return {
@@ -30,17 +31,25 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: false
+      filter: false,
+      currentPage: 1,
+      setCurrentPage: 1,
+      postPerPage: 1,
+      setPostPerPage: 1,
+      activePage: 1
     };
     this.gotoProfile = this.gotoProfile.bind(this);
     this.searchrest = this.searchrest.bind(this);
     this.filterCuisine = this.filterCuisine.bind(this);
     this.getMenu = this.getMenu.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
-
+  handlePageChange(pageNumber) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+  }
   gotoProfile = e => {
     e.preventDefault();
-    // console.log("test 1");
     this.props.toProfilePage();
   };
   searchrest = e => {
@@ -54,20 +63,14 @@ class Home extends Component {
     this.props.searchrest(data);
   };
   getMenu = e => {
-    console.log("testing");
     let getIdArr = e.target.id.split("-");
     let id = parseInt(getIdArr[1]);
-    // console.log("id obtained is " + resId.id);
   };
   filterCuisine = e => {
     e.preventDefault();
     this.setState({
       filter: true
     });
-    // let selcted = "All foods";
-    // let newList = this.props.restaurants;
-    // let filteredList = newList.filter(rest => rest.cuisine == selcted);
-    // console.log(filteredList);
   };
   render() {
     let redirectVar = null;
@@ -78,20 +81,21 @@ class Home extends Component {
       redirectVar = <Redirect to="/login" />;
     }
     let details = null,
-      cuisines = null;
+      cuisines = null,
+      paginate = null;
     let restTable = null;
     if (this.props.getRest == true) {
       if (this.state.filter) {
         let cuisineList = [];
         let checkBoxes = document.getElementsByName("checkBox");
-        console.log("chcekbox" + checkBoxes);
+        // console.log("chcekbox" + checkBoxes);
         for (let i = 0; i < checkBoxes.length; i++) {
           if (checkBoxes[i].checked == true) {
-            console.log("chcek " + checkBoxes[i].value);
+            // console.log("chcek " + checkBoxes[i].value);
             cuisineList.push(checkBoxes[i].value);
           }
         }
-        console.log("cuisineList" + cuisineList);
+        // console.log("cuisineList" + cuisineList);
         let newList = this.props.filterList.filter(
           rest => cuisineList.indexOf(rest.cuisine) > -1
         );
@@ -133,8 +137,25 @@ class Home extends Component {
           );
         });
       } else {
-        console.log("rest  0" + JSON.stringify(this.props.restaurants));
-        details = this.props.restaurants.map(rest => {
+        var restaurantList = this.props.restaurants;
+        var len = restaurantList.length;
+        const indexOfLastrest = this.state.activePage * this.state.postPerPage;
+        const indexOfFirstrest = indexOfLastrest - this.state.postPerPage;
+        const CurrentList = restaurantList.slice(
+          indexOfFirstrest,
+          indexOfLastrest
+        );
+        paginate = (
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={this.state.postPerPage}
+            totalItemsCount={len}
+            pageRangeDisplayed
+            onChange={this.handlePageChange}
+          ></Pagination>
+        );
+        console.log("new list :" + JSON.stringify(CurrentList));
+        details = CurrentList.map(rest => {
           let rest_id = rest._id;
 
           return (
@@ -289,7 +310,8 @@ class Home extends Component {
                   </div>
                 </div>
               </div>
-              {restTable}
+              <div>{restTable}</div>
+              <div class="pagination-search">{paginate}</div>
             </div>
           </div>
         </div>
