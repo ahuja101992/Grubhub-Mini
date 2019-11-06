@@ -144,7 +144,6 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        <p>test</p>
         <Launcher
           agentProfile={{
             teamName: "owner-buyerChatWindow",

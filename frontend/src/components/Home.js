@@ -34,8 +34,8 @@ class Home extends Component {
       filter: false,
       currentPage: 1,
       setCurrentPage: 1,
-      postPerPage: 1,
-      setPostPerPage: 1,
+      postPerPage: 6,
+      setPostPerPage: 6,
       activePage: 1
     };
     this.gotoProfile = this.gotoProfile.bind(this);
