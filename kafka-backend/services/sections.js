@@ -197,7 +197,7 @@ function handle_request(msg, callback) {
         response = {
           success: true,
           delSecSuccess: true,
-          result: dish
+          result: owner
         };
 
         Owner.update(

@@ -50,7 +50,7 @@ class Checkout extends Component {
     let rest_email = sessionStorage.getItem("rest-email-id");
     let buy_email = sessionStorage.getItem("email_id");
     let restuarant_name = sessionStorage.getItem("res-name");
-    let first_name = sessionStorage.getItem("name");
+    let first_name = sessionStorage.getItem("first_name");
     // buy_email = "admin@admin.com";
     order = {
       total_price: totalPrice,

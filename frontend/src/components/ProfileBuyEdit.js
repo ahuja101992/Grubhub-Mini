@@ -6,6 +6,7 @@ import cookie from "react-cookies";
 import { getProfile, updateProfile } from "../actions/loginActions";
 import axios from "axios";
 import "./profile.css";
+import connectionUrl from "../../config/config";
 function mapStateToProps(store) {
   return {
     errMsg: store.login.errMsg,
@@ -62,7 +63,7 @@ class Profilebuyedit extends Component {
     };
     let email_id = sessionStorage.getItem("email_id");
     axios
-      .post(`http://localhost:3010/image/${email_id}/imgupload`, data, {
+      .post(`http://` + connectionUrl + `/image/${email_id}/imgupload`, data, {
         headers: headers
       })
       .then(res => {

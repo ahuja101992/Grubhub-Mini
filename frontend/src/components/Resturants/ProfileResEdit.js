@@ -62,7 +62,7 @@ class Profileresedit extends Component {
     let email_id = sessionStorage.getItem("email_idRes");
     axios
       .post(
-        "http://" + connectionUrl + "/image/${email_id}/resimgupload",
+        `http://` + connectionUrl + `/image/${email_id}/resimgupload`,
         data,
         {
           headers: headers

@@ -176,14 +176,7 @@ class ShowRRest extends Component {
                       {"Name : " + ord.user.first_name}
                     </div>
                     <div class="buyer-address">
-                      {"Address : " +
-                        ord.house_num +
-                        " " +
-                        ord.ADDR_1 +
-                        ", " +
-                        ord.CITY +
-                        ", " +
-                        ord.ZIPCODE}
+                      {"Address : " + ord.address}
                     </div>
 
                     <div class="order-price">
