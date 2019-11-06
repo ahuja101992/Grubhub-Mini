@@ -6,7 +6,7 @@ import cookie from "react-cookies";
 import { getProfile, updateProfile } from "../actions/loginActions";
 import axios from "axios";
 import "./profile.css";
-import connectionUrl from "../../config/config";
+import connectionUrl from "../config/config";
 function mapStateToProps(store) {
   return {
     errMsg: store.login.errMsg,
